@@ -131,6 +131,299 @@ CHAT5
 Conversation.create!(channel: "Instagram", content: conversas_5, user_id: user.id)
 
 
+conversas_6 = <<~CHAT6
+[Customer]: Oi, boa tarde. Gente, sério, já não sei mais o que fazer. Comprei o Tênis UrbanFlow Knit – tamanho 37, pedido #BF-78219, no dia 28/01, com previsão de entrega para 01/02. Hoje já é 05/02 e nada. O status fica mudando entre “saiu para entrega” e “pendente no centro de distribuição”. Vou mandar um print aqui — imagina um screenshot — porque não faz sentido nenhum.
+[Support Agent]: Boa tarde! Sinto muito mesmo pelo transtorno, e agradeço por enviar o print, ele ajuda bastante. Entendo totalmente sua frustração, ainda mais com esses status contraditórios. Deixe-me verificar seu pedido no sistema para entender o que aconteceu. Só um instante, por favor.
+[Customer]: Claro… mas olha, é que eu comprei esse tênis pra usar no trabalho, porque estou com dor no pé com meu tênis antigo. Então esse atraso tá me prejudicando de verdade. E o pior: ontem recebi uma notificação dizendo “entrega reprogramada”, mas não diz para quando. Fica tudo muito confuso.
+[Support Agent]: Obrigado por compartilhar esses detalhes. Acabei de checar aqui internamente: o seu pacote realmente sofreu uma retenção logística no centro de distribuição de Campinas devido a um “alto volume de remessas” — é a mensagem que recebi da transportadora. Não é a experiência que queremos que você tenha. Vou solicitar uma priorização de rota para que ele seja entregue o mais rápido possível.
+Você poderia confirmar seu endereço completo para garantirmos que não há nenhum bloqueio por divergência?
+[Customer]: Sim, claro: Rua Dr. Roberto Silveira, 1280 – Apto 402, Vila Prado – Campinas/SP, CEP 13045-900. Já conferi mil vezes, tá certinho. Inclusive, no tracking aparece esse mesmo endereço. Não entendo por que ficou “retido”.
+[Support Agent]: Perfeito, obrigada pela confirmação! O endereço realmente está correto. Já abri um chamado direto com a transportadora solicitando liberação imediata e pedindo uma nova previsão oficial. Eles costumam responder em até 24 horas, mas já sinalizei urgência. Assim que eu tiver retorno, te aviso por aqui.
+[Customer]: Tá, mas sinceramente… vocês conseguem garantir que isso vai chegar ainda essa semana? Porque já tá muito fora do prazo. Eu gosto muito da Beautiful Feet, mas isso aqui está complicado.
+[Support Agent]: Entendo totalmente sua preocupação, e você está certíssima em cobrá-la. Embora eu ainda dependa da resposta da transportadora, pelo histórico que analisei, é bem provável que a entrega aconteça entre amanhã e sexta-feira (06–07/02). Mesmo assim, só vou considerar confirmado quando eles retornarem oficialmente.
+Para compensar o transtorno, já deixei registrado um cupom de 20% off para sua próxima compra: FEET20.
+[Customer]: Obrigada pelo retorno e pelo cupom. Eu realmente só preciso que chegue. Por favor, me avisa assim que tiver qualquer novidade, tá? Porque tô ficando ansiosa com isso.
+[Support Agent]: Pode deixar! Assim que a transportadora responder ao chamado — ou se eu notar qualquer mudança no status antes disso — eu te aviso imediatamente por aqui. Vamos acompanhar juntas até o tênis chegar certinho na sua porta.
+CHAT6
+Conversation.create!(channel: "Whatsapp", content: conversas_6, user_id: user.id)
+
+conversas_7 = <<~CHAT7
+[Customer]: Oi, boa tarde. Fiz o pedido #BF-10291 no dia 03/02, um Sneaker BreezeLite – tamanho 38, e a previsão era 06/02. Hoje já é 10/02 e nada. O tracking não muda há 3 dias. Vou mandar o print aqui — imagina screenshot —.
+[Support Agent]: Boa tarde! Sinto muito mesmo pelo transtorno. Obrigada por enviar o print, ele ajuda bastante. Vou verificar o que ocorreu com a transportadora. Só um instante, por favor.
+[Customer]: Claro… mas já estou bem chateada. Preciso desse tênis para treinar porque o meu atual está com a sola abrindo. E o status só aparece “em transferência”.
+[Support Agent]: Entendo totalmente sua frustração. Verifiquei aqui e identifiquei um atraso no centro de distribuição de Guarulhos devido a readequação de rotas. Já abri um chamado solicitando urgência na liberação.
+[Customer]: Isso significa que ainda vai demorar? Porque já passou muito do prazo...
+[Support Agent]: Pela previsão atualizada, a transportadora informou entrega entre amanhã e 12/02. Assim que houver atualização, te aviso imediatamente.
+[Customer]: Tá bom… espero mesmo que chegue. Obrigada.
+[Support Agent]: Eu que agradeço pela compreensão! Vamos acompanhar juntas até a entrega chegar certinho.
+CHAT7
+Conversation.create!(channel: "Instagram", content: conversas_7, user_id: user.id)
+
+
+conversas_8 = <<~CHAT8
+[Customer]: Olá, tudo bem? Meu pedido #BF-88310 do Botinha SoftWalk – tamanho 36 estava previsto para ontem, 09/02, mas nada chegou. No tracking consta “objeto em rota reversa”. O que isso significa?
+[Support Agent]: Olá! Obrigada por nos chamar. “Rota reversa” significa que o pacote pode ter sido devolvido ao centro de distribuição por algum erro de leitura. Vou confirmar isso para você.
+[Customer]: Mas como assim erro? O endereço está certo. Sempre recebo compras aqui. Fiquei confusa.
+[Support Agent]: Realmente não deveria ter acontecido. Verifiquei no sistema e a transportadora marcou “endereço não localizado”. Já solicitei correção e nova tentativa.
+[Customer]: Nossa… ninguém tentou me ligar ou nada. Isso atrasa tudo.
+[Support Agent]: Concordo. E sinto muito por isso. Já priorizei seu pedido e pedi que realizem nova tentativa até 11/02.
+[Customer]: Tá… por favor, me avise quando tiver resposta.
+[Support Agent]: Pode deixar! Assim que houver movimentação no sistema, retorno aqui.
+CHAT8
+Conversation.create!(channel: "Instagram", content: conversas_8, user_id: user.id)
+
+conversas_9 = <<~CHAT9
+[Customer]: Oi! O meu pedido #BF-77201 com o Tênis AirFlex Motion – 37 deveria ter sido entregue no dia 02/02. Já estamos no dia 08/02 e nem sinal. O app dos Correios mostra “ processamento interno”.
+[Support Agent]: Oi! Lamento demais pelo atraso. Esse status realmente indica retenção no centro logístico. Vou verificar o motivo.
+[Customer]: Tá bom, mas eu precisava dele para uma viagem… e vou amanhã. Acho que não vai chegar a tempo né?
+[Support Agent]: Olhei aqui: a transportadora informou uma fila de liberação aduaneira, mas o item já está liberado desde hoje cedo. Previsão de entrega: 09 ou 10/02.
+[Customer]: Poxa… queria usar na viagem. 😔
+[Support Agent]: Sinto muito mesmo. Se não chegar a tempo, posso te oferecer reembolso parcial como compensação.
+[Customer]: Entendi. Me avisa qualquer mudança, por favor.
+[Support Agent]: Aviso sim! Estou acompanhando de perto.
+CHAT9
+Conversation.create!(channel: "RA", content: conversas_9, user_id: user.id)
+
+conversas_10 = <<~CHAT10
+[Customer]: Boa noite. O pedido #BF-42109 era para chegar hoje cedo. Um Slingback ElegantSoft – 35. No tracking está: “falha na tentativa de entrega — cliente ausente”. Eu estava em casa o dia todo!
+[Support Agent]: Boa noite! Sinto muito por essa informação incorreta. Isso acontece quando a rota está atrasada e o entregador não consegue finalizar todas as entregas.
+[Customer]: Mas por que marcaram como “ausente”? Isso atrapalha totalmente.
+[Support Agent]: Concordo. Já solicitei nova tentativa para amanhã até 18h. Vou pedir para não depender de confirmação manual do entregador.
+[Customer]: Obrigada, espero que dessa vez venha mesmo.
+[Support Agent]: Vai sim! Te mantenho informada.
+CHAT10
+Conversation.create!(channel: "Whatsapp", content: conversas_10, user_id: user.id)
+
+conversas_11 = <<~CHAT11
+[Customer]: Oi! Pedido #BF-90444, Sandália ComfortWave – 38. Fiz no dia 01/02, previsão 04/02. Hoje é 09/02. No histórico aparece “Pacote danificado — aguardando análise”. O que isso significa?
+[Support Agent]: Oi! Obrigada por avisar. Esse status aparece quando a transportadora identifica avaria externa na embalagem. Vou confirmar se isso afeta o produto.
+[Customer]: Nossa, espero que não… era presente para minha mãe.
+[Support Agent]: Eles responderam que a embalagem foi amassada, mas o produto parece intacto. Devem liberar hoje.
+[Customer]: Ai, que susto. Mas chega quando?
+[Support Agent]: Previsão 10 ou 11/02.
+[Customer]: Tá bom. Obrigada pela rapidez.
+[Support Agent]: Sempre à disposição!
+CHAT11
+Conversation.create!(channel: "RA", content: conversas_11, user_id: user.id)
+
+
+conversas_12 = <<~CHAT12
+Customer: Oi, boa tarde. Meu pedido #BF-66721 do Tênis Running AirMesh – 40 está atrasado. Comprei dia 28/01, previsão 31/01. Hoje é 06/02 e não chegou. O tracking não atualiza desde 02/02.
+Support Agent: Boa tarde! Sinto muito pelo transtorno. Deixa eu verificar diretamente com a transportadora o que aconteceu.
+Customer: Obrigado. Eu comprei para começar fisioterapia e estou tendo que adiar por causa disso. 😕
+Support Agent: Entendo completamente. Aqui aparece que o pacote está em processo de reencaminhamento de rota, o que acontece quando há excesso de carga no caminhão.
+Customer: Nossa, mas isso demora tanto assim?
+Support Agent: Geralmente não, mas houve uma sobrecarga no hub de Curitiba. A nova previsão é entre 07 e 08/02.
+Customer: Tá certo… fico no aguardo. Se puder me avisar quando mudar o status, agradeço.
+Support Agent: Pode deixar! Vou acompanhar de perto e atualizar você.
+CHAT12
+Conversation.create!(channel: "Instagram", content: conversas_12, user_id: user.id)
+
+conversas_13 = <<~CHAT13
+Customer: Olá! Meu pedido #BF-30091, Sapatilha FlexBelle – 36, está parado desde 01/02 com o status “fiscalização”. Isso é normal? Previsão era 02/02.
+Support Agent: Olá! Obrigada por chamar. Esse status aparece quando o pacote passa por análise aleatória da transportadora. Vou ver quanto tempo deve levar.
+Customer: Porque já está com 5 dias de atraso… achei estranho demais.
+Support Agent: Verifiquei com eles. Houve uma revisão interna de documentação, já concluída. A entrega ficou reprogramada para 07/02.
+Customer: Pelo menos liberou, né… mas atrasou bastante.
+Support Agent: Com certeza, e peço desculpas por isso. Posso registrar um cupom de 15% para sua próxima compra.
+Customer: Ok, obrigada. Acompanho aqui então.
+Support Agent: Qualquer novidade te aviso por aqui mesmo.
+CHAT13
+Conversation.create!(channel: "RA", content: conversas_13, user_id: user.id)
+
+conversas_14 = <<~CHAT14
+Customer: Oi! Pedido #BF-51022, Coturno TrailUrban – 39. Tava previsto para ontem, 05/02. Recebi notificação dizendo “destinatário ausente”, mas eu estava literalmente na porta de casa na hora do suposto horário da tentativa.
+Support Agent: Oi! Sinto muito por isso. Esse registro costuma aparecer quando a rota do entregador está incompleta e ele não consegue finalizar as entregas.
+Customer: Mas isso é muito chato… já aconteceu com outra compra de vocês. 😤
+Support Agent: Imagino a frustração. Já solicitei nova tentativa para hoje até 20h e deixei observação de que o cliente está disponível.
+Customer: Tá. Mas será que realmente vão vir? Não quero esperar à toa de novo.
+Support Agent: Sim, já conversei com o supervisor da rota. Eles se comprometeram a tentar novamente hoje.
+Customer: Então vou aguardar. Obrigado.
+Support Agent: Qualquer atualização, eu te escrevo.
+CHAT14
+Conversation.create!(channel: "Whatsapp", content: conversas_14, user_id: user.id)
+
+conversas_15 = <<~CHAT15
+Customer: Oi, tudo bem? Meu pedido #BF-20118, o Slip On CloudStep – 37, já está há 4 dias parado como “objeto não localizado no fluxo”. Isso quer dizer que sumiu?
+Support Agent: Oi! Obrigada por avisar. Esse status indica que o pacote não foi escaneado corretamente na última movimentação. Vou confirmar se está em processo de busca.
+Customer: Porque estou preocupada… é presente de aniversário e já está super atrasado.
+Support Agent: Verifiquei aqui e sim, ele entrou em procedimento de varredura interna na transportadora. Eles costumam localizar em até 48h.
+Customer: Espero mesmo, porque não posso esperar semanas.
+Support Agent: Concordo totalmente. Se não localizarem até amanhã, envio um novo produto para você.
+Customer: Aí sim, obrigada. Me avisa por favor.
+Support Agent: Pode deixar! Estou acompanhando de perto.
+CHAT15
+Conversation.create!(channel: "RA", content: conversas_15, user_id: user.id)
+
+conversas_16 = <<~CHAT16
+Customer: Boa tarde. Meu pedido #BF-99510 com a Sandália VelvetFit – 35 dizia entrega para hoje entre 8h e 13h. São 18h e nada. O status está “saiu para entrega” desde cedo.
+Support Agent: Boa tarde! Sinto muito pela demora. Vou verificar se houve alguma intercorrência na rota do entregador.
+Customer: Porque estou em casa desde manhã só esperando isso. 😩
+Support Agent: Falei com a transportadora agora. Houve um problema mecânico no veículo da rota e eles não conseguiram finalizar as entregas.
+Customer: Sério? Nossa… poderiam avisar né.
+Support Agent: Com certeza. Já reagendaram sua entrega para amanhã no período da manhã.
+Customer: Tá bom… espero que aconteça mesmo.
+Support Agent: Eu também! Vou monitorar para garantir que seja entregue.
+CHAT16
+Conversation.create!(channel: "Whatsapp", content: conversas_16, user_id: user.id)
+
+conversas_17 = <<~CHAT17
+Customer: Olá… meu pedido #BF-11509 está atrasadíssimo. O Tênis ActiveSpring – 38. Comprei dia 20/01 e até hoje, 05/02, nada. Isso é normal?
+Support Agent: Olá! Não, não é normal. Por favor, desculpe pelo transtorno. Vou investigar imediatamente.
+Customer: É que eu vi no tracking aparece “erro de triagem” e depois não atualizou mais.
+Support Agent: Achei aqui: o pacote foi enviado para o hub errado, em Belo Horizonte, em vez de São Paulo.
+Customer: Meu Deus 😳 como assim isso acontece?
+Support Agent: Infelizmente erros de leitura podem ocorrer, mas já solicitei correção e prioridade no reenvio.
+Customer: Ok, mas chega quando?
+Support Agent: Previsão atualizada: entre 07 e 08/02.
+Customer: Tá… obrigada.
+Support Agent: Qualquer novidade te aviso.
+CHAT17
+Conversation.create!(channel: "RA", content: conversas_17, user_id: user.id)
+
+conversas_18 = <<~CHAT18
+Customer: Oi, boa tarde. Pedido #BF-21881, Scarpin SoftTouch – 34. O entregador marcou que “não conseguiu acesso ao condomínio”. Mas não é verdade — portaria funciona 24h.
+Support Agent: Boa tarde! Isso realmente não faz sentido. Sinto muito por esse registro incorreto. Vou abrir reclamação com a rota.
+Customer: Aconteceu às 10h da manhã e eu estava até na portaria!
+Support Agent: Falei com a transportadora: foi erro de registro automático. Nova tentativa agendada para hoje até 21h.
+Customer: Tá, vou aguardar. Só não quero ficar esperando à toa.
+Support Agent: Entendo totalmente. Estou monitorando. Assim que o status mudar, te aviso.
+Support Agent: Sempre à disposição.
+CHAT18
+Conversation.create!(channel: "Whatsapp", content: conversas_18, user_id: user.id)
+
+conversas_19 = <<~CHAT19
+Customer: Oi! Pedi o Mocassim UrbanComfort – 39, pedido #BF-51004. Era pra chegar ontem, mas agora o status diz: “pedido retido para inspeção manual”. Isso é preocupante?
+Support Agent: Oi! Obrigada por chamar. Esse status significa apenas uma análise extra por parte da transportadora. Vou descobrir o motivo específico.
+Customer: Fiquei assustada, nunca vi isso.
+Support Agent: Eles informaram que houve uma divergência de peso na triagem, então abriram para conferir. Produto sem dano.
+Customer: Ufa. Mas e a entrega?
+Support Agent: Reprogramada para 08/02.
+Customer: Certo. Obrigada pela transparência.
+CHAT19
+Conversation.create!(channel: "RA", content: conversas_19, user_id: user.id)
+
+
+conversas_20 = <<~CHAT20
+[Customer]: Olá, tudo bem? Meu pedido #BF-70011, um Tênis FitBalance – 37, está parado desde 29/01 com status “em transferência entre unidades”. Já estamos em 07/02.
+[Support Agent]: Olá! Sinto muito por esse atraso tão grande. Vou checar imediatamente com a transportadora o que está acontecendo.
+[Customer]: Obrigada. Estou realmente frustrada porque comprei para usar numa corrida esse fim de semana.
+[Support Agent]: Verifiquei aqui: houve um erro na roteirização e o pacote foi enviado para uma unidade intermediária errada. Já solicitei correção.
+[Customer]: Isso significa que vai atrasar mais ainda?
+[Support Agent]: A previsão atualizada é de entrega até 09/02. Pedi prioridade no transporte.
+[Customer]: Tá bom… por favor me avise qualquer mudança.
+[Support Agent]: Pode deixar! Estarei monitorando de perto.
+CHAT20
+Conversation.create!(channel: "RA", content: conversas_20, user_id: user.id)
+
+conversas_21 = <<~CHAT21
+[Customer]: Boa tarde. Fiz o pedido #BF-66002, Sandália BreezeComfort – 36, no dia 30/01. Era pra chegar dia 02/02. Hoje é 08/02 e nada. O tracking mostra “remessa não movimentada”.
+[Support Agent]: Boa tarde! Sinto muito mesmo pela demora. Esse status indica que o pacote não foi escaneado desde a entrada no centro de distribuição. Vou verificar se está parado lá.
+[Customer]: Parece que sumiu… estou bem chateada.
+[Support Agent]: Falei com a transportadora: houve falha no sistema de leitura, mas o pacote está lá sim. Já pediram a movimentação para expedição.
+[Customer]: E vocês conseguem saber quando entregam?
+[Support Agent]: Eles estimam entre 09 e 10/02.
+[Customer]: Espero que aconteça, porque comprei para um evento.
+[Support Agent]: Estarei acompanhando e te aviso qualquer atualização.
+CHAT21
+Conversation.create!(channel: "Whatsapp", content: conversas_21, user_id: user.id)
+
+conversas_22 = <<~CHAT22
+[Customer]: Oi! Eu fiz o pedido #BF-31900, Sapatênis UrbanFlex – 40, e disseram que ia chegar até dia 05/02. No tracking aparece “tentativa de entrega frustrada — área de risco”. Eu moro aqui há 10 anos, nunca deu isso!
+[Support Agent]: Oi! Que situação absurda, sinto muito mesmo. Esse status geralmente é usado quando a rota está incompleta e não conseguem finalizar o trajeto — não significa que sua região seja de risco.
+[Customer]: Nossa, que alívio. Achei que tinha algo a ver com segurança mesmo.
+[Support Agent]: Nada disso. Já solicitei reclassificação e nova tentativa ainda hoje.
+[Customer]: E será que vem mesmo?
+[Support Agent]: Segundo o supervisor de rota, sim. Entre 16h e 21h.
+[Customer]: Tá bom. Qualquer coisa me avise, por favor.
+[Support Agent]: Atualizo você assim que tiver movimentação.
+CHAT22
+Conversation.create!(channel: "Instagram", content: conversas_22, user_id: user.id)
+
+conversas_23 = <<~CHAT23
+[Customer]: Olá, tudo certo? Fiz o pedido #BF-88117, o Tênis CloudGrip – 38. O status fica alternando entre “em trânsito” e “aguardando fiscalização”. É normal isso?
+[Support Agent]: Olá! Obrigada por avisar. Não, essa alternância não deveria acontecer. Vou checar com a transportadora.
+[Customer]: Porque já está com 3 dias de atraso… achei estranho demais.
+[Support Agent]: Recebi retorno: houve uma falha no sistema de atualização deles, mas o pacote está liberado.
+[Customer]: Então não está preso na fiscalização?
+[Support Agent]: Não, felizmente não. Previsão de entrega: 09/02.
+[Customer]: Ufa. Obrigada pela verificação!
+[Support Agent]: Sempre que precisar, é só me chamar.
+CHAT23
+Conversation.create!(channel: "RA", content: conversas_23, user_id: user.id)
+
+conversas_24 = <<~CHAT24
+[Customer]: Boa noite. Pedido #BF-41222, Bota WinterSoft – 37. Está parado há 6 dias com status “roteirização pendente”. Isso é o quê?
+[Support Agent]: Boa noite! Esse status significa que o pacote chegou na unidade, mas não entrou na rota de entrega. Vou confirmar por quê.
+[Customer]: Porque comprei para viajar sábado, e acho que não vai chegar mais…
+[Support Agent]: Falei com o centro de distribuição: houve atraso no processamento manual. Eles garantiram inclusão na rota de amanhã.
+[Customer]: Amanhã mesmo?
+[Support Agent]: Sim, entre 12h e 18h.
+[Customer]: Tá… vou confiar. Obrigada.
+[Support Agent]: Qualquer mudança te aviso prontamente.
+CHAT24
+Conversation.create!(channel: "RA", content: conversas_24, user_id: user.id)
+
+conversas_25 = <<~CHAT25
+[Customer]: Oi! Meu pedido #BF-55091, Tênis SoftRun – 39, foi marcado como entregue hoje às 14h, mas NÃO recebi nada. Já chequei com vizinhos e nada.
+[Support Agent]: Oi! Nossa, sinto muito por isso. Vou checar imediatamente o comprovante de entrega.
+[Customer]: Já estou preocupada porque preciso usar amanhã cedo.
+[Support Agent]: Verifiquei aqui: o entregador registrou erroneamente como entregue porque não conseguiu finalizar a rota. O pacote ainda está com ele.
+[Customer]: Gente… mas como registram como entregue sem entregar? 😡
+[Support Agent]: Realmente não deveria acontecer. Já solicitei correção e nova tentativa para amanhã até 11h.
+[Customer]: Espero que chegue, por favor.
+[Support Agent]: Estou acompanhando em tempo real. Te aviso qualquer novidade.
+CHAT25
+Conversation.create!(channel: "Whatsapp", content: conversas_25, user_id: user.id)
+
+conversas_26 = <<~CHAT26
+[Customer]: Boa tarde! O pedido #BF-10007, Sandália SoftChic – 35, está parado desde 01/02 com o status “falha na triagem”. A entrega era para 03/02.
+[Support Agent]: Boa tarde! Obrigada por relatar. Vou verificar o que ocorreu na triagem.
+[Customer]: Eu nunca vi esse tipo de status. Achei que o pacote tivesse quebrado ou algo assim.
+[Support Agent]: Não, fique tranquila. “Falha na triagem” geralmente é erro de leitura no sistema. Pedi que o item seja reprocessado.
+[Customer]: E a nova previsão?
+[Support Agent]: Eles informaram que a entrega deve ocorrer até 09/02.
+[Customer]: Ok… vou aguardar então. Obrigada.
+[Support Agent]: Estou acompanhando e te aviso qualquer novidade.
+CHAT26
+Conversation.create!(channel: "Instagram", content: conversas_26, user_id: user.id)
+
+conversas_27 = <<~CHAT27
+[Customer]: Oi, tudo bom? Meu pedido #BF-41891, Tênis PowerFlex – 42, está marcado como “endereço inválido”. Mas o endereço está certinho! Já comprei várias vezes aqui.
+[Support Agent]: Oi! Que situação chata. Vou checar se houve erro de leitura no sistema.
+[Customer]: Confere aí, por favor. Não faz sentido nenhum.
+[Support Agent]: Verifiquei. A transportadora registrou rua “sem numeração”. Isso às vezes acontece quando a etiqueta amassa.
+[Customer]: Mas o número está super visível!
+[Support Agent]: Concordo. Já solicitei correção manual e nova tentativa para amanhã.
+[Customer]: Obrigado. Espero que resolva.
+[Support Agent]: Qualquer alteração de status te aviso.
+CHAT27
+Conversation.create!(channel: "Whatsapp", content: conversas_27, user_id: user.id)
+
+conversas_28 = <<~CHAT28
+[Customer]: Olá, meu pedido #BF-70077, o Tamanco SummerLite – 36, está há 4 dias com status “objeto conferido”. Não anda! Já era para ter chegado ontem.
+[Support Agent]: Olá! Obrigada por chamar. Vou verificar a causa dessa retenção.
+[Customer]: Estou achando que podem ter perdido meu pacote.
+[Support Agent]: Felizmente não. O item está na fila de expedição, mas houve excesso de carga na unidade. Está programado para sair hoje.
+[Customer]: Então entrega quando?
+[Support Agent]: Amanhã, entre 10h e 17h.
+[Customer]: Ok. Obrigada pela clareza.
+[Support Agent]: Qualquer novidade, atualizo aqui.
+CHAT28
+Conversation.create!(channel: "Whatsapp", content: conversas_28, user_id: user.id)
+
+conversas_29 = <<~CHAT29
+[Customer]: Boa noite. O pedido #BF-99110, Tênis LightStep – 38, está marcado como “em devolução ao remetente”. Como assim? Eu nem recebi!
+[Support Agent]: Boa noite! Vou verificar isso imediatamente porque realmente não está certo.
+[Customer]: Achei bem estranho… não faz sentido.
+[Support Agent]: Verifiquei com a transportadora. Foi um erro no fechamento da rota — eles não conseguiram entregar ontem e o sistema gerou devolução automática.
+[Customer]: Meu Deus… mas não devolveram de verdade, né?
+[Support Agent]: Não! O pacote ainda está na unidade local. Já solicitei reversão e nova tentativa amanhã.
+[Customer]: Tá… por favor me avise mesmo. Não quero que voltem com o produto.
+[Support Agent]: Pode deixar! Estarei acompanhando para garantir que chegue certinho.
+
+CHAT29
+Conversation.create!(channel: "Instagram", content: conversas_29, user_id: user.id)
 conversas_30 = <<~CHAT30
  [Customer]: Oi, bom dia. Preciso de ajuda urgente
  [Support Agent]: Olá! Aqui é a Ana da Beautiful Feet. Me conta o que aconteceu, por favor.
