@@ -30,7 +30,25 @@ class ClassificationsController < ApplicationController
         count: @values[idx]    # volume de conversas daquele dia
       }
     end
+    @conversations = @classification.conversations.order("RANDOM()")
+
+
+  if @classification.improvements.empty?
+    llm = RubyLLM.chat
+
+    response = llm
+      .with_instructions(Improvement::IMPROVEMENT_PROMPT)
+      .ask(@classification.full_text_of_conversations)
+
+    @improvement = Improvement.create!(
+      user: current_user,
+      classification: @classification,
+      content: response.content
+    )
+  else
+    @improvement = @classification.improvements.last
   end
+end
 
   private
 
