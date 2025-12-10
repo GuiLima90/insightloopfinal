@@ -10,6 +10,27 @@ class ClassificationsController < ApplicationController
 
   def show
     @classification = Classification.find(params[:id])
+
+    trend_hash = conversation_trends_for([@classification.tag])
+    trend      = trend_hash[@classification.tag] || { labels: [], values: [] }
+
+    @labels = trend[:labels]
+    @values = trend[:values]
+
+    # Só queremos mostrar: Dia 1, 5, 10, 15, 20, 25, 30
+    days_to_show = [1, 5, 10, 15, 20, 25, 30]
+
+    @volume_points = []
+
+    @labels.each_with_index do |label, idx|
+      day_number = idx + 1
+      next unless days_to_show.include?(day_number)
+
+      @volume_points << {
+        label: label,          # "Dia 1", "Dia 5" e por aí vai....
+        count: @values[idx]    # volume de conversas daquele dia
+      }
+    end
   end
 
   private
@@ -58,13 +79,13 @@ class ClassificationsController < ApplicationController
     end
 
     trends.transform_values do |per_day_hash|
-      all_dates = (start_date..Date.today).to_a
+    all_dates = (start_date..Date.today).to_a
 
-      {
-        labels: all_dates.map { |d| d.strftime("%d/%m") },
-        values: all_dates.map { |d| per_day_hash[d] || 0 }
-      }
-    end
+    {
+      labels: all_dates.each_with_index.map { |_, idx| "Dia #{idx + 1}" },
+      values: all_dates.map { |d| per_day_hash[d] || per_day_hash[d.to_s] || 0 }
+    }
+end
   end
 
 end

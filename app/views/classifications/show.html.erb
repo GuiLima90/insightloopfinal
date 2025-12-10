@@ -1,8 +1,25 @@
 <h1>Classifications#show</h1>
 <p>Find me in app/views/classifications/show.html.erb</p>
 
-<h1><%= @classification.name %></h1>
+<h1><%= @classification.tag %></h1>
 
 <p>Detalhes da classificação.</p>
+
+<table class="table table-sm w-auto">
+  <thead>
+    <tr>
+      <th>Dia</th>
+      <th class="text-end">Conversas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @volume_points.each do |point| %>
+      <tr>
+        <td><%= point[:label] %></td>
+        <td class="text-end"><%= point[:count] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <%= link_to "⬅ Back", classifications_path %>
