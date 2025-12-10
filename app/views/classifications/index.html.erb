@@ -63,114 +63,6 @@ header{height:64px;border-bottom:1px solid #e6e9ee;display:flex;align-items:cent
   <% end %>
 </ul>
 
-<h1>Classifications by Tag (counts + cumulative %)</h1>
-
-<div id="classificationChart" style="width:100%; max-width:1000px; height:500px;"></div>
-
-<!-- CODE FOR THE GRAPHIC - START -->
-<script>
-document.addEventListener("turbo:load", function() {
-  var el = document.getElementById("classificationChart");
-  if (!el) return;
-
-  var labels = <%= raw @chart_labels.to_json %>;
-  var counts = <%= raw @chart_counts.to_json %>;
-  var cumulative = <%= raw @chart_cumulative.to_json %>; // expected 0..100 values
-
-  if (!labels.length) { el.innerHTML = "<p>No data</p>"; return; }
-
-  // compute percent-of-total for bars (client-side) so bars fill 0..100 height
-  var total = counts.reduce(function(s, v){ return s + (Number(v) || 0); }, 0) || 1;
-  var countsPercent = counts.map(function(v){ return (Number(v) || 0) / total * 100; });
-
-  var chart = echarts.init(el);
-
-  var option = {
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'shadow' },
-      formatter: function(params) {
-        var s = params[0].name + '<br/>';
-        params.forEach(function(p) {
-          if (p.seriesType === 'bar') {
-            var idx = p.dataIndex;
-            s += p.marker + ' Count: ' + counts[idx] + ' (' + p.value.toFixed(2) + '%)<br/>';
-          } else if (p.seriesType === 'line') {
-            s += p.marker + ' Cumulative: ' + (Number(p.value)||0).toFixed(1) + '%<br/>';
-          }
-        });
-        return s;
-      }
-    },
-
-    legend: { data: ['Count','Cumulative %'], top: 6 },
-
-    grid: { left:'6%', right:'6%', bottom:'18%', containLabel:true },
-
-    xAxis: {
-      type: 'category',
-      data: labels,
-      axisLabel: { interval: 0, rotate: labels.length > 10 ? 45 : 0, fontWeight: 'bold' }
-    },
-
-    // single yAxis used for scale but hidden visually
-    yAxis: [{
-      type: 'value',
-      min: 0,
-      max: 100,
-      show: false,          // hide everything: line, ticks, labels, grid
-      axisLine: { show: false },
-      axisTick: { show: false },
-      axisLabel: { show: false },
-      splitLine: { show: false }
-    }],
-
-    series: [
-      {
-        name: 'Count',
-        type: 'bar',
-        data: countsPercent,
-        barWidth: Math.min(60, Math.max(24, Math.floor((el.clientWidth||800)/labels.length) - 4)),
-        itemStyle: { borderRadius: [6, 6, 0, 0] },
-        label: {
-          show: true,
-          position: 'top',
-          formatter: function(p){ return counts[p.dataIndex]; }
-        }
-      },
-      {
-        name: 'Cumulative %',
-        type: 'line',
-        yAxisIndex: 0,
-        data: cumulative,
-        smooth: true,
-        symbol: 'circle',
-        symbolSize: 6,
-        // show the cumulative percentage as label on each point
-        label: {
-          show: true,
-          position: 'top',
-          distance: 8,
-          formatter: function(params) {
-            var v = Number(params.value) || 0;
-            return Math.round(v) + '%';
-          },
-          fontSize: 11,
-          color: '#666'
-        },
-        itemStyle: { borderWidth: 1 }
-      }
-    ]
-  };
-
-  chart.setOption(option);
-  window.addEventListener('resize', function() { chart.resize(); });
-});
-</script>
-<!-- CODE FOR THE GRAPHIC - END -->
-
-
-
 
 <div id="app" class="app">
 
@@ -209,9 +101,9 @@ document.addEventListener("turbo:load", function() {
 </aside>-->
 
 
-<!-- MAIN: header + content
+<!-- MAIN: header + content -->
 <div class="main">
-<header>
+<!-- <header>
 <div style="display:flex;align-items:center;gap:12px">
 <button aria-label="Toggle sidebar" id="sidebarToggle">☰</button>
 <div>
@@ -224,12 +116,38 @@ document.addEventListener("turbo:load", function() {
 <div>
 <button id="dateRangeBtn" aria-haspopup="menu">Últimos 7 dias ▾</button>
 </div>
-</header>
+</header> -->
 
 
-<main class="content" id="main-content"> -->
+<main class="content" id="main-content">
 
 <!-- KPI Cards -->
+<section aria-label="KPIs" class="cards-row" role="region">
+<div class="card" aria-hidden="false">
+<p style="margin:0;font-size:12px;color:#6b7280">Volume Total</p>
+<p style="margin:8px 0;font-size:28px;font-weight:700">2,412</p>
+<p style="margin:0;font-size:13px;color:green">+12% vs. semana anterior</p>
+</div>
+
+
+<div class="card">
+<p style="margin:0;font-size:12px;color:#6b7280">Taxa de Resolução</p>
+<p style="margin:8px 0;font-size:28px;font-weight:700">88.5%</p>
+<p style="margin:0;font-size:13px;color:green">+3.2% vs. semana anterior</p>
+</div>
+
+
+<div class="card">
+<p style="margin:0;font-size:12px;color:#6b7280">Tempo Médio</p>
+<p style="margin:8px 0;font-size:28px;font-weight:700">8.2 min</p>
+<p style="margin:0;font-size:13px;color:#bb1f1f">+1.5 min vs. semana anterior</p>
+</div>
+
+
+<div class="card">
+<p style="margin:0;font-size:12px;color:#6b7280">Satisfação</p>
+<p style="margin:8px 0;font-size:28px;font-weight:700">4.6 / 5.0</p>
+<p style="margin:0;font-size:13px;color:green">+0.2 vs. semana anterior</p>
 </div>
 </section>
 
@@ -247,25 +165,9 @@ document.addEventListener("turbo:load", function() {
 
 
 <!-- Placeholder chart: replace with Recharts/Chart.js integration -->
-<div class="chart" role="img" aria-label="Gráfico Pareto — barras de volume e linha acumulada">
-<!-- Minimal accessible SVG placeholder, keep for static export or use a canvas/chart lib -->
-<svg width="100%" height="100%" viewBox="0 0 1000 320" preserveAspectRatio="none" aria-hidden="true">
-<rect x="0" y="0" width="100%" height="100%" fill="#fff" />
-<!-- simple bars for the first 6 categories (demo) -->
-<rect x="60" y="40" width="70" height="220" fill="#0ea5a4" rx="4"></rect>
-<rect x="150" y="90" width="70" height="170" fill="#0ea5a4" rx="4"></rect>
-<rect x="240" y="140" width="70" height="120" fill="#0ea5a4" rx="4"></rect>
-<rect x="330" y="200" width="70" height="60" fill="#0ea5a4" rx="4"></rect>
-<!-- cumulative line (visual) -->
-<polyline points="95,280 185,220 275,180 365,150" fill="none" stroke="#ef4444" stroke-width="3" />
+<div id="classificationChart" style="width:100%; max-width:1000px; height:500px;">
+<%= render "shared/charts_paretto" %>
 
-
-<!-- X labels (kept short) -->
-<text x="95" y="305" text-anchor="middle" font-size="11">Atraso</text>
-<text x="185" y="305" text-anchor="middle" font-size="11">Tamanho</text>
-<text x="275" y="305" text-anchor="middle" font-size="11">Cupom</text>
-<text x="365" y="305" text-anchor="middle" font-size="11">NF</text>
-</svg>
 </div>
 </section>
 
@@ -314,7 +216,9 @@ document.addEventListener("turbo:load", function() {
 </div>
 </section>
 
-</html>
+</main>
+</div>
+</div>
 
 
 
@@ -332,3 +236,7 @@ document.addEventListener("turbo:load", function() {
 </ul>
 
 <%= link_to "⬅ Back to Conversations", root_path %>
+
+
+</body>
+</html>
