@@ -9,10 +9,127 @@
 <ul>
   <% @classifications.each do |classification| %>
     <li>
-      <%= link_to "#{classification.tag}", classification_path(classifications_show) %>
+      <%= link_to "#{classification.tag}", classifications_show_path %>
     </li>
   <% end %>
 </ul>
+
+<h1>Classifications by Tag (counts + cumulative %)</h1>
+
+<div id="classificationChart" style="width:100%; max-width:1000px; height:500px;"></div>
+
+
+<script>
+document.addEventListener("turbo:load", function() {
+  var el = document.getElementById("classificationChart");
+  if (!el) return;
+
+  var labels = <%= raw @chart_labels.to_json %>;
+  var counts = <%= raw @chart_counts.to_json %>;
+  var cumulative = <%= raw @chart_cumulative.to_json %>; // expected 0..100 values
+
+  if (!labels.length) { el.innerHTML = "<p>No data</p>"; return; }
+
+  // compute percent-of-total for bars (client-side) so bars fill 0..100 height
+  var total = counts.reduce(function(s, v){ return s + (Number(v) || 0); }, 0) || 1;
+  var countsPercent = counts.map(function(v){ return (Number(v) || 0) / total * 100; });
+
+  var chart = echarts.init(el);
+
+  var option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        var s = params[0].name + '<br/>';
+        params.forEach(function(p) {
+          if (p.seriesType === 'bar') {
+            var idx = p.dataIndex;
+            s += p.marker + ' Count: ' + counts[idx] + ' (' + p.value.toFixed(2) + '%)<br/>';
+          } else if (p.seriesType === 'line') {
+            s += p.marker + ' Cumulative: ' + (Number(p.value)||0).toFixed(1) + '%<br/>';
+          }
+        });
+        return s;
+      }
+    },
+
+    legend: { data: ['Count','Cumulative %'], top: 6 },
+
+    grid: { left:'6%', right:'6%', bottom:'18%', containLabel:true },
+
+    xAxis: {
+      type: 'category',
+      data: labels,
+      axisLabel: { interval: 0, rotate: labels.length > 10 ? 45 : 0, fontWeight: 'bold' }
+    },
+
+    // single yAxis used for scale but hidden visually
+    yAxis: [{
+      type: 'value',
+      min: 0,
+      max: 100,
+      show: false,          // hide everything: line, ticks, labels, grid
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: { show: false },
+      splitLine: { show: false }
+    }],
+
+    series: [
+      {
+        name: 'Count',
+        type: 'bar',
+        data: countsPercent,
+        barWidth: Math.min(60, Math.max(24, Math.floor((el.clientWidth||800)/labels.length) - 4)),
+        itemStyle: { borderRadius: [6, 6, 0, 0] },
+        label: {
+          show: true,
+          position: 'top',
+          formatter: function(p){ return counts[p.dataIndex]; }
+        }
+      },
+      {
+        name: 'Cumulative %',
+        type: 'line',
+        yAxisIndex: 0,
+        data: cumulative,
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 6,
+        // show the cumulative percentage as label on each point
+        label: {
+          show: true,
+          position: 'top',
+          distance: 8,
+          formatter: function(params) {
+            var v = Number(params.value) || 0;
+            return Math.round(v) + '%';
+          },
+          fontSize: 11,
+          color: '#666'
+        },
+        itemStyle: { borderWidth: 1 }
+      }
+    ]
+  };
+
+  chart.setOption(option);
+  window.addEventListener('resize', function() { chart.resize(); });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <h2>Top Pareto Classifications (80%)</h2>
 
