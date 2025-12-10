@@ -2,6 +2,12 @@ source "https://rubygems.org"
 
 ruby "3.3.5"
 
+# one of the two:
+# gem "chart_kick"
+# gem "graph_js"
+
+gem "rails_charts"
+
 gem "ruby_llm", "~> 1.2.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"

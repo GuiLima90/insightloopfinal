@@ -3,3 +3,10 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
 import "bootstrap"
+import "echarts"
+import "echarts/theme/dark"
+
+import * as echarts from 'echarts';
+import 'echarts/theme/dark';
+
+window.echarts = echarts;
