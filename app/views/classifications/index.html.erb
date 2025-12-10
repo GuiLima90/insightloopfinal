@@ -9,7 +9,7 @@
 <ul>
   <% @classifications.each do |classification| %>
     <li>
-      <%= link_to "#{classification.tag}", classification_path(classifications_show) %>
+      <%= link_to classification.tag, classification_path(classification) %>
     </li>
   <% end %>
 </ul>

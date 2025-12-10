@@ -1,8 +1,14 @@
 <h1>Classifications#show</h1>
 <p>Find me in app/views/classifications/show.html.erb</p>
 
-<h1><%= @classification.name %></h1>
+<h1><%= @classification.tag %></h1>
 
 <p>Detalhes da classificação.</p>
+
+<h2>Roadmap Estratégico </h2>
+
+<div class="card p-3 mb-4">
+  <pre><%= @improvement.content %></pre>
+</div>
 
 <%= link_to "⬅ Back", classifications_path %>
