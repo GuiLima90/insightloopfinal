@@ -1,8 +1,210 @@
-<h1>Classifications#show</h1>
-<p>Find me in app/views/classifications/show.html.erb</p>
+<div class="d-flex align-items-center justify-content-center gap-3 mb-3">
 
-<h1><%= @classification.tag %></h1>
+  <!-- SETA DE VOLTAR -->
+  <%= link_to classifications_path, class: "text-dark fs-3 text-decoration-none" do %>
+    ←
+  <% end %>
 
-<p>Detalhes da classificação.</p>
+  <!-- TÍTULO -->
+  <h1 class="mb-0"><%= @classification.tag %></h1>
 
-<%= link_to "⬅ Back", classifications_path %>
+</div>
+
+<!-- BLOCO SUPERIOR: GRÁFICO + CARROSSEL -->
+<div class="container mt-4 mb-5">
+  <div class="row align-items-stretch">
+
+    <!-- ESQUERDA: GRÁFICO (VAZIO) -->
+    <div class="col-md-6">
+      <div class="card p-4 shadow-sm text-center h-100" style="min-height: 280px;">
+        <h5 class="text-muted">📈 Tendência de Volume</h5>
+      </div>
+    </div>
+
+    <!-- DIREITA: CARROSSEL -->
+    <div class="col-md-6">
+      <div class="card p-4 shadow-sm h-100" style="min-height: 280px;">
+        <h5 class="text-muted">🗣️ Voz do Cliente</h5>
+
+        <% if @conversations.any? %>
+
+          <div id="conversationCarousel"
+               class="carousel slide position-relative"
+               data-bs-ride="carousel">
+
+            <div class="carousel-inner">
+
+              <% @conversations.each_with_index do |conversation, index| %>
+
+                <div class="carousel-item <%= 'active' if index == 0 %>">
+                  <div class="p-3">
+
+                    <!-- APENAS 2 MENSAGENS DO CUSTOMER -->
+                    <% mensagens_customer =
+                        conversation.content
+                                   .to_s
+                                   .lines
+                                   .select { |linha| linha.strip.start_with?("[Customer]:") }
+                                   .map   { |linha| linha.gsub("[Customer]:", "").strip }
+                                   .first(2)
+                    %>
+
+                    <p class="fst-italic" style="white-space: pre-line; font-size: 1rem;">
+                      “<%= mensagens_customer.join("\n") %>”
+                    </p>
+
+                    <hr>
+
+                    <!-- RODAPÉ -->
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <strong><%= ["Carlos M.", "Maria S.", "João P.", "Ana L.", "Aline K.", "Diego Z.", "Eduardo N.", "Thiago B."].sample %></strong><br> <!-- Nomes aleatorios -->
+                        <small><%= conversation.created_at.strftime("%d %b, %Y • %H:%M") %></small>
+                      </div>
+
+                      <span class="badge rounded-pill bg-light text-primary border">
+                        <%= ["Confuso", "Frustrado", "Aguardando", "Nervoso", "Preocupado" ].sample %>
+                      </span>
+                    </div>
+
+                    <!-- BADGES DE BAIXO -->
+                    <div class="d-flex gap-2 mt-3 flex-wrap">
+                      <span class="badge bg-success">
+                        R$ <%= rand(300..3500) %> <!--Aqui gera um número aleatório entre 300 e 3500 toda vez que a página carrega.-->
+                      </span>
+
+                      <span class="badge bg-secondary">
+                        <%= rand(1..12) %> Tickets  <!-- gera um número aleatório de 1 a 12.-->
+                      </span>
+
+                      <span class="badge bg-light text-dark border">
+                        <%= ["Standard", "Enterprise", "Premium"].sample %>
+                      </span>
+                    </div>
+
+                  </div>
+                </div>
+
+              <% end %>
+            </div>
+
+            <!-- BOTÃO ESQUERDA - COLADO NA LATERAL -->
+            <button class="carousel-control-prev position-absolute"
+                    type="button"
+                    data-bs-target="#conversationCarousel"
+                    data-bs-slide="prev"
+                    style="
+                      top: 50%;
+                      left: -2px;
+                      transform: translateY(-50%);
+                      width: 30px;
+                      height: 30px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    ">
+              <span style="font-size: 26px; color: black;">❮</span>
+            </button>
+
+            <!-- BOTÃO DIREITA - COLADO NA LATERAL -->
+            <button class="carousel-control-next position-absolute"
+                    type="button"
+                    data-bs-target="#conversationCarousel"
+                    data-bs-slide="next"
+                    style="
+                      top: 50%;
+                      right: -2px;
+                      transform: translateY(-50%);
+                      width: 30px;
+                      height: 30px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    ">
+              <span style="font-size: 26px; color: black;">❯</span>
+            </button>
+
+          </div>
+
+        <% else %>
+
+          <p class="text-muted text-center mt-4">
+            Nenhuma conversa cadastrada para esta classificação.
+          </p>
+
+        <% end %>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<h2 class="text-center fw-bold mt-5">Roadmap Estratégico</h2>
+<p class="text-center text-muted mb-4">
+  Ações priorizadas por IA para resolver esse problema
+</p>
+
+<% texto = @improvement.content.to_s %>
+<% curto = texto.split("Curto Prazo:").last&.split("Médio Prazo:")&.first %>
+<% medio = texto.split("Médio Prazo:").last&.split("Longo Prazo:")&.first %>
+<% longo = texto.split("Longo Prazo:").last %>
+
+<div class="row mt-4 mb-5 d-flex align-items-stretch">
+
+  <!-- CURTO PRAZO -->
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm h-100">
+      <h5 class="fw-bold">⚡ Curto Prazo</h5>
+      <small class="text-muted">1–2 semanas</small>
+      <hr>
+
+      <% curto.to_s.lines.each do |linha| %>
+        <% next unless linha.start_with?("-") || linha.start_with?("✅") %>
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2">📄</span>
+          <span><%= linha.gsub("✅", "").gsub("-", "").strip %></span>
+          <span class="badge bg-success ms-auto">Fácil</span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- MÉDIO PRAZO -->
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm h-100">
+      <h5 class="fw-bold">🎯 Médio Prazo</h5>
+      <small class="text-muted">1–3 meses</small>
+      <hr>
+
+      <% medio.to_s.lines.each do |linha| %>
+        <% next unless linha.start_with?("-") || linha.start_with?("✅") %>
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2">📄</span>
+          <span><%= linha.gsub("✅", "").gsub("-", "").strip %></span>
+          <span class="badge bg-warning ms-auto">Médio</span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- LONGO PRAZO -->
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm h-100">
+      <h5 class="fw-bold">🏗️ Longo Prazo</h5>
+      <small class="text-muted">3–12 meses</small>
+      <hr>
+
+      <% longo.to_s.lines.each do |linha| %>
+        <% next unless linha.start_with?("-") || linha.start_with?("✅") %>
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2">📄</span>
+          <span><%= linha.gsub("✅", "").gsub("-", "").strip %></span>
+          <span class="badge bg-danger ms-auto">Complexo</span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>
