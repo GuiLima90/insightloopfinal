@@ -48,6 +48,14 @@ export default class extends Controller {
           legend: { display: false },
           tooltip: {
             enabled: true,
+            displayColors: false,
+            backgroundColor: "#ffffff",
+            titleColor: "#111827",
+            bodyColor: "#111827",
+            borderColor: "#e5e7eb",
+            borderWidth: 1,
+            shadowColor: "rgba(0,0,0,0.25)",
+            shadowBlur: 8,
             usePointStyle: false,
             callbacks: {
               label: function(context) {
