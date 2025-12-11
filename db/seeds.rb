@@ -1,38 +1,53 @@
+Improvement.destroy_all
 Conversation.destroy_all
-User.destroy_all
 Classification.destroy_all
+User.destroy_all
+
 
 user = User.create!(email: "saunier2@gmail.com", password: "123456")
 
-Classification.create!(
+atraso_entrega = Classification.create!(
   tag: "Atraso na Entrega",
-  tag_description: "Use esta tag quando o cliente relata atraso no pedido ou que ainda não recebeu a encomenda."
+  tag_description: "Use esta tag somente quando o foco principal do cliente for o atraso — ou seja, quando ele reclama que o pedido não chegou no prazo, está demorando mais que o esperado, vai perder uma viagem/evento, ou se mostra irritado porque a entrega está demorada, travada, sem previsão. Mesmo que o cliente mencione rastreio parado, se a reclamação central for sobre o atraso, esta é a tag correta. Exemplos: 'meu pedido está parado' 'já era pra ter chegado' 'dias de atraso'"
 )
 
-Classification.create!(
-  tag: "Troca de Tamanho",
-  tag_description: "Use esta tag quando o cliente deseja trocar o tamanho de um produto ou recebeu um tamanho incorreto."
+pedido_errado = Classification.create!(
+  tag: "Pedido Errado",
+  tag_description: "Use esta tag quando o cliente recebeu um item diferente do que pediu — seja modelo, cor, tamanho ou produto completamente errado."
 )
 
-Classification.create!(
+produto_danificado = Classification.create!(
+  tag: "Produto Danificado",
+  tag_description: "Use esta tag quando o cliente recebe um produto com defeito, risco, dano, falha na qualidade ou avaria durante o transporte."
+)
+
+erro_cupom = Classification.create!(
   tag: "Erro no Cupom",
-  tag_description: "Use esta tag quando o cupom não funciona, dá inválido ou o desconto não é aplicado."
+  tag_description: "Use esta tag quando o cupom não aplica, aparece como inválido, não funciona para os itens ou gera mensagens de erro."
 )
 
-Classification.create!(
-  tag: "Solicitação de NF",
-  tag_description: "Use esta tag quando o cliente pede nota fiscal ou tem dúvidas relacionadas à emissão da NF."
-)
-
-Classification.create!(
-  tag: "Dúvida de Produto",
-  tag_description: "Use esta tag quando o cliente tem perguntas sobre características, uso, material ou detalhes do produto."
-)
-
-Classification.create!(
+rastreamento = Classification.create!(
   tag: "Rastreamento",
-  tag_description: "Use esta tag quando o cliente solicita código de rastreio, status do envio, localização do pedido ou problemas para visualizar rastreamento."
+  tag_description: "Use esta tag somente quando o foco principal do cliente solicitar o código de rastreio, link ou atualização de tracking, mas sem enfatizar atraso e sem manifestar urgência sobre prazo. Se a queixa central for “vai atrasar / já atrasou / estou preocupada com o prazo” → NÃO é Rastreamento, é Atraso na Entrega."
 )
+
+duvida_produto = Classification.create!(
+  tag: "Dúvida de Produto",
+  tag_description: "Use esta tag quando o cliente faz perguntas sobre tamanho, forma, características, uso, material ou detalhes técnicos do produto."
+)
+
+solicitacao_nf = Classification.create!(
+  tag: "Solicitação de NF",
+  tag_description: "Use esta tag quando o cliente pede nota fiscal, segunda via, correção ou informações sobre emissão da NF."
+)
+
+# Intervalo de datas para simular os "últimos 30 dias"
+start_date = 30.days.ago.to_date  # Dia 1
+end_date   = Date.today           # Dia 30
+
+def random_date(start_date, end_date)
+  rand(start_date..end_date)
+end
 
   conversas = <<~CHAT
     [Customer]: Olá, bom dia. Preciso falar com um atendente urgente. O robô não tá entendendo meu problema.
@@ -51,7 +66,7 @@ Classification.create!(
     [Support Agent]: Combinado! O novo código de rastreio vai chegar no seu e-mail em até 2 horas. Qualquer coisa, é só me chamar. Desculpe novamente pelo susto e espero que arrase no casamento com a Beautiful Feet!
 CHAT
 
-Conversation.create!(channel: "Whatsapp", content: conversas, user: user)
+Conversation.create!(channel: "Whatsapp", content: conversas, user: user, occurred_on: random_date(start_date, end_date))
 
 conversas_2 = <<~CHAT2
   [Customer]: Olá, boa tarde. Recebi meu pedido #BF59321 hoje cedo, o tênis Urban Flex Branco – tamanho 39, mas ele veio com um risco enorme na lateral :confused: Isso não é normal, né?
@@ -70,7 +85,7 @@ conversas_2 = <<~CHAT2
   [Support Agent]: Pode deixar, vou acompanhar pessoalmente para garantir que saia tudo certo :blush: Qualquer coisa, é só chamar!
 CHAT2
 
-Conversation.create!(channel: "Instagram", content: conversas_2, user: user)
+Conversation.create!(channel: "Instagram", content: conversas_2, user: user, occurred_on: random_date(start_date, end_date))
 
 conversas_3 = <<~CHAT3
   [Customer]: Oi, boa tarde. Tô tentando fechar uma compra aqui no site de vocês mas tá difícil. O cupom de primeira compra não tá entrando de jeito nenhum.
@@ -91,7 +106,7 @@ conversas_3 = <<~CHAT3
   [Support Agent]: Imagina, eu que agradeço a paciência! Já estamos separando seu par 36 com todo carinho. Qualquer dúvida sobre o rastreio, é só chamar aqui. Tenha uma semana incrível com seus sapatos novos! :sparkles:
 CHAT3
 
-Conversation.create!(channel: "RA", content: conversas_3, user: user)
+Conversation.create!(channel: "RA", content: conversas_3, user: user, occurred_on: random_date(start_date, end_date))
 
 conversas_4 = <<~CHAT4
   [Customer]: Oi, boa tarde. Preciso falar com alguém sobre uma troca por defeito, mas é urgente.
@@ -109,10 +124,10 @@ conversas_4 = <<~CHAT4
   [Support Agent]: Perfeito! Já volto com as fotos do seu "Classic Nude" impecável. Obrigada por nos dar uma segunda chance de acertar! :high_heel::sparkles:
 CHAT4
 
-Conversation.create!(channel: "Whatsapp", content: conversas_4, user: user)
+Conversation.create!(channel: "Whatsapp", content: conversas_4, user: user, occurred_on: random_date(start_date, end_date))
 
 conversas_5 = <<~CHAT5
-  [Customer]: Bom dia. Estou tentando rastrear meu pedido há 3 dias e o site da transportadora não atualiza. O prazo de entrega era para ontem, dia 01/12, e até agora nada.
+  [Customer]: Bom dia. O prazo de entrega era para ontem, dia 01/12, e até agora nada. Meu pedido está atrasado!
   [Support Agent]: Olá, bom dia! Aqui é a Júlia, do atendimento da Beautiful Feet. Peço mil desculpas pelo atraso e pela falta de atualização no rastreio. Sei o quanto é frustrante esperar uma encomenda que não chega na data combinada. :confused: Você pode me informar o número do seu pedido para eu verificar o que houve com a transportadora agora mesmo?
   [Customer]: O pedido é o #BF-50588. Comprei o Tênis "Cloud Running" Branco, tamanho 35. Eu comprei com antecedência justamente porque vou viajar na sexta-feira agora e queria levar ele. Se não chegar, vou ter um problema sério.
   [Support Agent]: Entendi perfeitamente a urgência, obrigada pelos dados. Estou acessando o sistema da transportadora "FlashLog" aqui. Só um minuto... Realmente, consta que o pacote saiu do nosso centro de distribuição no dia 25/11, mas travou no status "Em transferência entre unidades" em Barueri desde o dia 28/11. Isso não é comum.
@@ -128,7 +143,7 @@ conversas_5 = <<~CHAT5
   [Support Agent]: Eu que agradeço a compreensão. Vai dar certo! Tenha um ótimo dia e até breve. :athletic_shoe::airplane:
 CHAT5
 
-Conversation.create!(channel: "Instagram", content: conversas_5, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_5, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 
 conversas_6 = <<~CHAT6
@@ -145,11 +160,11 @@ Para compensar o transtorno, já deixei registrado um cupom de 20% off para sua 
 [Customer]: Obrigada pelo retorno e pelo cupom. Eu realmente só preciso que chegue. Por favor, me avisa assim que tiver qualquer novidade, tá? Porque tô ficando ansiosa com isso.
 [Support Agent]: Pode deixar! Assim que a transportadora responder ao chamado — ou se eu notar qualquer mudança no status antes disso — eu te aviso imediatamente por aqui. Vamos acompanhar juntas até o tênis chegar certinho na sua porta.
 CHAT6
-Conversation.create!(channel: "Whatsapp", content: conversas_6, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_6, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_7 = <<~CHAT7
-[Customer]: Oi, boa tarde. Fiz o pedido #BF-10291 no dia 03/02, um Sneaker BreezeLite – tamanho 38, e a previsão era 06/02. Hoje já é 10/02 e nada. O tracking não muda há 3 dias. Vou mandar o print aqui — imagina screenshot —.
-[Support Agent]: Boa tarde! Sinto muito mesmo pelo transtorno. Obrigada por enviar o print, ele ajuda bastante. Vou verificar o que ocorreu com a transportadora. Só um instante, por favor.
+[Customer]: Oi, boa tarde. Fiz o pedido #BF-10291 no dia 03/02, um Sneaker BreezeLite – tamanho 38, e meu pedido está atrasado!
+[Support Agent]: Boa tarde! Sinto muito mesmo pelo transtorno. Vou verificar o que ocorreu com a transportadora. Só um instante, por favor.
 [Customer]: Claro… mas já estou bem chateada. Preciso desse tênis para treinar porque o meu atual está com a sola abrindo. E o status só aparece “em transferência”.
 [Support Agent]: Entendo totalmente sua frustração. Verifiquei aqui e identifiquei um atraso no centro de distribuição de Guarulhos devido a readequação de rotas. Já abri um chamado solicitando urgência na liberação.
 [Customer]: Isso significa que ainda vai demorar? Porque já passou muito do prazo...
@@ -157,7 +172,7 @@ conversas_7 = <<~CHAT7
 [Customer]: Tá bom… espero mesmo que chegue. Obrigada.
 [Support Agent]: Eu que agradeço pela compreensão! Vamos acompanhar juntas até a entrega chegar certinho.
 CHAT7
-Conversation.create!(channel: "Instagram", content: conversas_7, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_7, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 
 conversas_8 = <<~CHAT8
@@ -170,10 +185,10 @@ conversas_8 = <<~CHAT8
 [Customer]: Tá… por favor, me avise quando tiver resposta.
 [Support Agent]: Pode deixar! Assim que houver movimentação no sistema, retorno aqui.
 CHAT8
-Conversation.create!(channel: "Instagram", content: conversas_8, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_8, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_9 = <<~CHAT9
-[Customer]: Oi! O meu pedido #BF-77201 com o Tênis AirFlex Motion – 37 deveria ter sido entregue no dia 02/02. Já estamos no dia 08/02 e nem sinal. O app dos Correios mostra “ processamento interno”.
+[Customer]: Oi! O meu pedido #BF-77201 com o Tênis AirFlex Motion – 37 deveria ter sido entregue no dia 02/02. Já estamos no dia 08/02 e nem sinal.
 [Support Agent]: Oi! Lamento demais pelo atraso. Esse status realmente indica retenção no centro logístico. Vou verificar o motivo.
 [Customer]: Tá bom, mas eu precisava dele para uma viagem… e vou amanhã. Acho que não vai chegar a tempo né?
 [Support Agent]: Olhei aqui: a transportadora informou uma fila de liberação aduaneira, mas o item já está liberado desde hoje cedo. Previsão de entrega: 09 ou 10/02.
@@ -182,17 +197,17 @@ conversas_9 = <<~CHAT9
 [Customer]: Entendi. Me avisa qualquer mudança, por favor.
 [Support Agent]: Aviso sim! Estou acompanhando de perto.
 CHAT9
-Conversation.create!(channel: "RA", content: conversas_9, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_9, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_10 = <<~CHAT10
-[Customer]: Boa noite. O pedido #BF-42109 era para chegar hoje cedo. Um Slingback ElegantSoft – 35. No tracking está: “falha na tentativa de entrega — cliente ausente”. Eu estava em casa o dia todo!
+[Customer]: Boa noite. O pedido #BF-42109 era para chegar hoje cedo. Um Slingback ElegantSoft – 35. Eu estava em casa o dia todo e não chegou. Meu pedido está atrasado!
 [Support Agent]: Boa noite! Sinto muito por essa informação incorreta. Isso acontece quando a rota está atrasada e o entregador não consegue finalizar todas as entregas.
 [Customer]: Mas por que marcaram como “ausente”? Isso atrapalha totalmente.
 [Support Agent]: Concordo. Já solicitei nova tentativa para amanhã até 18h. Vou pedir para não depender de confirmação manual do entregador.
 [Customer]: Obrigada, espero que dessa vez venha mesmo.
 [Support Agent]: Vai sim! Te mantenho informada.
 CHAT10
-Conversation.create!(channel: "Whatsapp", content: conversas_10, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_10, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_11 = <<~CHAT11
 [Customer]: Oi! Pedido #BF-90444, Sandália ComfortWave – 38. Fiz no dia 01/02, previsão 04/02. Hoje é 09/02. No histórico aparece “Pacote danificado — aguardando análise”. O que isso significa?
@@ -204,11 +219,11 @@ conversas_11 = <<~CHAT11
 [Customer]: Tá bom. Obrigada pela rapidez.
 [Support Agent]: Sempre à disposição!
 CHAT11
-Conversation.create!(channel: "RA", content: conversas_11, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_11, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 
 conversas_12 = <<~CHAT12
-Customer: Oi, boa tarde. Meu pedido #BF-66721 do Tênis Running AirMesh – 40 está atrasado. Comprei dia 28/01, previsão 31/01. Hoje é 06/02 e não chegou. O tracking não atualiza desde 02/02.
+Customer: Oi, boa tarde. Meu pedido #BF-66721 do Tênis Running AirMesh – 40 e meu pedido está atrasado. Comprei dia 28/01, previsão 31/01. Hoje é 06/02 e não chegou.
 Support Agent: Boa tarde! Sinto muito pelo transtorno. Deixa eu verificar diretamente com a transportadora o que aconteceu.
 Customer: Obrigado. Eu comprei para começar fisioterapia e estou tendo que adiar por causa disso. 😕
 Support Agent: Entendo completamente. Aqui aparece que o pacote está em processo de reencaminhamento de rota, o que acontece quando há excesso de carga no caminhão.
@@ -217,7 +232,7 @@ Support Agent: Geralmente não, mas houve uma sobrecarga no hub de Curitiba. A n
 Customer: Tá certo… fico no aguardo. Se puder me avisar quando mudar o status, agradeço.
 Support Agent: Pode deixar! Vou acompanhar de perto e atualizar você.
 CHAT12
-Conversation.create!(channel: "Instagram", content: conversas_12, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_12, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_13 = <<~CHAT13
 Customer: Olá! Meu pedido #BF-30091, Sapatilha FlexBelle – 36, está parado desde 01/02 com o status “fiscalização”. Isso é normal? Previsão era 02/02.
@@ -229,10 +244,10 @@ Support Agent: Com certeza, e peço desculpas por isso. Posso registrar um cupom
 Customer: Ok, obrigada. Acompanho aqui então.
 Support Agent: Qualquer novidade te aviso por aqui mesmo.
 CHAT13
-Conversation.create!(channel: "RA", content: conversas_13, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_13, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_14 = <<~CHAT14
-Customer: Oi! Pedido #BF-51022, Coturno TrailUrban – 39. Tava previsto para ontem, 05/02. Recebi notificação dizendo “destinatário ausente”, mas eu estava literalmente na porta de casa na hora do suposto horário da tentativa.
+Customer: Oi! Pedido #BF-51022 está atrasado! Tava previsto para ontem, 05/02. Recebi notificação dizendo “destinatário ausente”, mas eu estava literalmente na porta de casa na hora do suposto horário da tentativa.
 Support Agent: Oi! Sinto muito por isso. Esse registro costuma aparecer quando a rota do entregador está incompleta e ele não consegue finalizar as entregas.
 Customer: Mas isso é muito chato… já aconteceu com outra compra de vocês. 😤
 Support Agent: Imagino a frustração. Já solicitei nova tentativa para hoje até 20h e deixei observação de que o cliente está disponível.
@@ -241,10 +256,10 @@ Support Agent: Sim, já conversei com o supervisor da rota. Eles se comprometera
 Customer: Então vou aguardar. Obrigado.
 Support Agent: Qualquer atualização, eu te escrevo.
 CHAT14
-Conversation.create!(channel: "Whatsapp", content: conversas_14, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_14, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_15 = <<~CHAT15
-Customer: Oi, tudo bem? Meu pedido #BF-20118, o Slip On CloudStep – 37, já está há 4 dias parado como “objeto não localizado no fluxo”. Isso quer dizer que sumiu?
+Customer: Oi, tudo bem? Meu pedido #BF-20118, o Slip On CloudStep – 37 está atrasado há 4 dias e como “objeto não localizado no fluxo”. Isso quer dizer que sumiu?
 Support Agent: Oi! Obrigada por avisar. Esse status indica que o pacote não foi escaneado corretamente na última movimentação. Vou confirmar se está em processo de busca.
 Customer: Porque estou preocupada… é presente de aniversário e já está super atrasado.
 Support Agent: Verifiquei aqui e sim, ele entrou em procedimento de varredura interna na transportadora. Eles costumam localizar em até 48h.
@@ -253,7 +268,7 @@ Support Agent: Concordo totalmente. Se não localizarem até amanhã, envio um n
 Customer: Aí sim, obrigada. Me avisa por favor.
 Support Agent: Pode deixar! Estou acompanhando de perto.
 CHAT15
-Conversation.create!(channel: "RA", content: conversas_15, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_15, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_16 = <<~CHAT16
 Customer: Boa tarde. Meu pedido #BF-99510 com a Sandália VelvetFit – 35 dizia entrega para hoje entre 8h e 13h. São 18h e nada. O status está “saiu para entrega” desde cedo.
@@ -265,7 +280,7 @@ Support Agent: Com certeza. Já reagendaram sua entrega para amanhã no período
 Customer: Tá bom… espero que aconteça mesmo.
 Support Agent: Eu também! Vou monitorar para garantir que seja entregue.
 CHAT16
-Conversation.create!(channel: "Whatsapp", content: conversas_16, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_16, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_17 = <<~CHAT17
 Customer: Olá… meu pedido #BF-11509 está atrasadíssimo. O Tênis ActiveSpring – 38. Comprei dia 20/01 e até hoje, 05/02, nada. Isso é normal?
@@ -279,10 +294,10 @@ Support Agent: Previsão atualizada: entre 07 e 08/02.
 Customer: Tá… obrigada.
 Support Agent: Qualquer novidade te aviso.
 CHAT17
-Conversation.create!(channel: "RA", content: conversas_17, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_17, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_18 = <<~CHAT18
-Customer: Oi, boa tarde. Pedido #BF-21881, Scarpin SoftTouch – 34. O entregador marcou que “não conseguiu acesso ao condomínio”. Mas não é verdade — portaria funciona 24h.
+Customer: Oi, boa tarde. Pedido #BF-21881, Scarpin SoftTouch – 34 que está atrasado! O entregador marcou que “não conseguiu acesso ao condomínio”. Mas não é verdade — portaria funciona 24h.
 Support Agent: Boa tarde! Isso realmente não faz sentido. Sinto muito por esse registro incorreto. Vou abrir reclamação com a rota.
 Customer: Aconteceu às 10h da manhã e eu estava até na portaria!
 Support Agent: Falei com a transportadora: foi erro de registro automático. Nova tentativa agendada para hoje até 21h.
@@ -290,10 +305,10 @@ Customer: Tá, vou aguardar. Só não quero ficar esperando à toa.
 Support Agent: Entendo totalmente. Estou monitorando. Assim que o status mudar, te aviso.
 Support Agent: Sempre à disposição.
 CHAT18
-Conversation.create!(channel: "Whatsapp", content: conversas_18, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_18, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_19 = <<~CHAT19
-Customer: Oi! Pedi o Mocassim UrbanComfort – 39, pedido #BF-51004. Era pra chegar ontem, mas agora o status diz: “pedido retido para inspeção manual”. Isso é preocupante?
+Customer: Oi! Pedi o Mocassim UrbanComfort – 39, pedido #BF-51004 está atrasado! Era pra chegar ontem, mas agora o status diz: “pedido retido para inspeção manual”. Isso é preocupante?
 Support Agent: Oi! Obrigada por chamar. Esse status significa apenas uma análise extra por parte da transportadora. Vou descobrir o motivo específico.
 Customer: Fiquei assustada, nunca vi isso.
 Support Agent: Eles informaram que houve uma divergência de peso na triagem, então abriram para conferir. Produto sem dano.
@@ -301,7 +316,7 @@ Customer: Ufa. Mas e a entrega?
 Support Agent: Reprogramada para 08/02.
 Customer: Certo. Obrigada pela transparência.
 CHAT19
-Conversation.create!(channel: "RA", content: conversas_19, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_19, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 
 conversas_20 = <<~CHAT20
@@ -314,7 +329,7 @@ conversas_20 = <<~CHAT20
 [Customer]: Tá bom… por favor me avise qualquer mudança.
 [Support Agent]: Pode deixar! Estarei monitorando de perto.
 CHAT20
-Conversation.create!(channel: "RA", content: conversas_20, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_20, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_21 = <<~CHAT21
 [Customer]: Boa tarde. Fiz o pedido #BF-66002, Sandália BreezeComfort – 36, no dia 30/01. Era pra chegar dia 02/02. Hoje é 08/02 e nada. O tracking mostra “remessa não movimentada”.
@@ -326,7 +341,7 @@ conversas_21 = <<~CHAT21
 [Customer]: Espero que aconteça, porque comprei para um evento.
 [Support Agent]: Estarei acompanhando e te aviso qualquer atualização.
 CHAT21
-Conversation.create!(channel: "Whatsapp", content: conversas_21, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_21, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_22 = <<~CHAT22
 [Customer]: Oi! Eu fiz o pedido #BF-31900, Sapatênis UrbanFlex – 40, e disseram que ia chegar até dia 05/02. No tracking aparece “tentativa de entrega frustrada — área de risco”. Eu moro aqui há 10 anos, nunca deu isso!
@@ -338,10 +353,10 @@ conversas_22 = <<~CHAT22
 [Customer]: Tá bom. Qualquer coisa me avise, por favor.
 [Support Agent]: Atualizo você assim que tiver movimentação.
 CHAT22
-Conversation.create!(channel: "Instagram", content: conversas_22, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_22, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_23 = <<~CHAT23
-[Customer]: Olá, tudo certo? Fiz o pedido #BF-88117, o Tênis CloudGrip – 38. O status fica alternando entre “em trânsito” e “aguardando fiscalização”. É normal isso?
+[Customer]: Olá, tudo certo? Fiz o pedido #BF-88117, o Tênis CloudGrip – 38. O status fica alternando entre “em trânsito” e “aguardando fiscalização”. É normal isso? E reforço: meu pedido está atrasado!
 [Support Agent]: Olá! Obrigada por avisar. Não, essa alternância não deveria acontecer. Vou checar com a transportadora.
 [Customer]: Porque já está com 3 dias de atraso… achei estranho demais.
 [Support Agent]: Recebi retorno: houve uma falha no sistema de atualização deles, mas o pacote está liberado.
@@ -350,11 +365,11 @@ conversas_23 = <<~CHAT23
 [Customer]: Ufa. Obrigada pela verificação!
 [Support Agent]: Sempre que precisar, é só me chamar.
 CHAT23
-Conversation.create!(channel: "RA", content: conversas_23, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_23, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_24 = <<~CHAT24
-[Customer]: Boa noite. Pedido #BF-41222, Bota WinterSoft – 37. Está parado há 6 dias com status “roteirização pendente”. Isso é o quê?
-[Support Agent]: Boa noite! Esse status significa que o pacote chegou na unidade, mas não entrou na rota de entrega. Vou confirmar por quê.
+[Customer]: Boa noite. Pedido #BF-41222, Bota WinterSoft – 37. Está parado há 6 dias e já está atrasado!
+[Support Agent]: Boa noite! Vou confirmar por quê.
 [Customer]: Porque comprei para viajar sábado, e acho que não vai chegar mais…
 [Support Agent]: Falei com o centro de distribuição: houve atraso no processamento manual. Eles garantiram inclusão na rota de amanhã.
 [Customer]: Amanhã mesmo?
@@ -362,7 +377,7 @@ conversas_24 = <<~CHAT24
 [Customer]: Tá… vou confiar. Obrigada.
 [Support Agent]: Qualquer mudança te aviso prontamente.
 CHAT24
-Conversation.create!(channel: "RA", content: conversas_24, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_24, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_25 = <<~CHAT25
 [Customer]: Oi! Meu pedido #BF-55091, Tênis SoftRun – 39, foi marcado como entregue hoje às 14h, mas NÃO recebi nada. Já chequei com vizinhos e nada.
@@ -374,10 +389,10 @@ conversas_25 = <<~CHAT25
 [Customer]: Espero que chegue, por favor.
 [Support Agent]: Estou acompanhando em tempo real. Te aviso qualquer novidade.
 CHAT25
-Conversation.create!(channel: "Whatsapp", content: conversas_25, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_25, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_26 = <<~CHAT26
-[Customer]: Boa tarde! O pedido #BF-10007, Sandália SoftChic – 35, está parado desde 01/02 com o status “falha na triagem”. A entrega era para 03/02.
+[Customer]: Boa tarde! O pedido #BF-10007, Sandália SoftChic – 35 está atrasado! A entrega era para 03/02.
 [Support Agent]: Boa tarde! Obrigada por relatar. Vou verificar o que ocorreu na triagem.
 [Customer]: Eu nunca vi esse tipo de status. Achei que o pacote tivesse quebrado ou algo assim.
 [Support Agent]: Não, fique tranquila. “Falha na triagem” geralmente é erro de leitura no sistema. Pedi que o item seja reprocessado.
@@ -386,7 +401,7 @@ conversas_26 = <<~CHAT26
 [Customer]: Ok… vou aguardar então. Obrigada.
 [Support Agent]: Estou acompanhando e te aviso qualquer novidade.
 CHAT26
-Conversation.create!(channel: "Instagram", content: conversas_26, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_26, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_27 = <<~CHAT27
 [Customer]: Oi, tudo bom? Meu pedido #BF-41891, Tênis PowerFlex – 42, está marcado como “endereço inválido”. Mas o endereço está certinho! Já comprei várias vezes aqui.
@@ -398,7 +413,7 @@ conversas_27 = <<~CHAT27
 [Customer]: Obrigado. Espero que resolva.
 [Support Agent]: Qualquer alteração de status te aviso.
 CHAT27
-Conversation.create!(channel: "Whatsapp", content: conversas_27, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_27, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_28 = <<~CHAT28
 [Customer]: Olá, meu pedido #BF-70077, o Tamanco SummerLite – 36, está há 4 dias com status “objeto conferido”. Não anda! Já era para ter chegado ontem.
@@ -410,7 +425,7 @@ conversas_28 = <<~CHAT28
 [Customer]: Ok. Obrigada pela clareza.
 [Support Agent]: Qualquer novidade, atualizo aqui.
 CHAT28
-Conversation.create!(channel: "Whatsapp", content: conversas_28, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_28, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_29 = <<~CHAT29
 [Customer]: Boa noite. O pedido #BF-99110, Tênis LightStep – 38, está marcado como “em devolução ao remetente”. Como assim? Eu nem recebi!
@@ -423,7 +438,7 @@ conversas_29 = <<~CHAT29
 [Support Agent]: Pode deixar! Estarei acompanhando para garantir que chegue certinho.
 
 CHAT29
-Conversation.create!(channel: "Instagram", content: conversas_29, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_29, user_id: user.id, occurred_on: random_date(start_date, end_date))
 conversas_30 = <<~CHAT30
  [Customer]: Oi, bom dia. Preciso de ajuda urgente
  [Support Agent]: Olá! Aqui é a Ana da Beautiful Feet. Me conta o que aconteceu, por favor.
@@ -438,7 +453,7 @@ conversas_30 = <<~CHAT30
  [Customer]: Sério? Se chegar amanhã cedo, eu choro de alegria.
  [Support Agent]: Vamos fazer o possível. Te envio o novo rastreio ainda hoje.
 CHAT30
-Conversation.create!(channel: "Whatsapp", content: conversas_30, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_30, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_31 = <<~CHAT31
  [Customer]: Boa tarde. Pela segunda vez vocês erram meu tamanho.
@@ -454,7 +469,7 @@ conversas_31 = <<~CHAT31
  [Support Agent]: Sem problemas, você terá 10 dias pra postar depois.
 CHAT31
 
-Conversation.create!(channel: "RA", content: conversas_31, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_31, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_32 = <<~CHAT32
  [Customer]: Oi, acho que veio errado o tamanho…
@@ -468,7 +483,7 @@ conversas_32 = <<~CHAT32
  [Support Agent]: O reenvio sai amanhã e chega em até 3 dias úteis.
 CHAT32
 
-Conversation.create!(channel: "Instagram", content: conversas_32, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_32, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_33 = <<~CHAT33
  [Customer]: Eu sei que já usei dentro de casa, mas veio no tamanho errado 😔
@@ -481,7 +496,7 @@ conversas_33 = <<~CHAT33
 
 CHAT33
 
-Conversation.create!(channel: "Whatsapp", content: conversas_33, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_33, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_34 = <<~CHAT34
  [Customer]: Oi, acabei de abrir meu pedido aqui no trabalho e veio errado.
@@ -492,7 +507,7 @@ conversas_34 = <<~CHAT34
  [Support Agent]: Sem problemas, já deixo o protocolo aberto pra adiantar.
 CHAT34
 
-Conversation.create!(channel: "Instagram", content: conversas_34, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_34, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_35 = <<~CHAT35
  [Customer]: Se não tiver mais meu tamanho, eu faço o quê?
@@ -503,17 +518,17 @@ conversas_35 = <<~CHAT35
  [Support Agent]: Já deixei reservado no sistema, fica tranquila.
 CHAT35
 
-Conversation.create!(channel: "RA", content: conversas_35, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_35, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_36 = <<~CHAT36
- [Customer]: E se o correio perder meu produto na devolução?
+ [Customer]: E se o correio perder meu produto na devolução? Meu pedido estava errado.
  [Support Agent]: Fique tranquila, o envio é segurado e rastreado.
- [Customer]: Porque é a primeira vez que eu troco online.
+ [Customer]: Porque é a primeira vez que eu troco online. Pois meu pedido estava errado.
  [Support Agent]: Entendo o medo, mas você estará protegida do início ao fim.
 
 CHAT36
 
-Conversation.create!(channel: "Instagram", content: conversas_36, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_36, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_37 = <<~CHAT37
  [Customer]: Já faz 9 dias que eu enviei a troca e ninguém responde.
@@ -524,7 +539,7 @@ conversas_37 = <<~CHAT37
  [Support Agent]: Sim, houve atraso da transportadora, infelizmente.
 CHAT37
 
-Conversation.create!(channel: "Instagram", content: conversas_37, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_37, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_38 = <<~CHAT38
  [Customer]: Meu sapato da troca foi enviado pro endereço antigo 😡
@@ -533,7 +548,7 @@ conversas_38 = <<~CHAT38
  [Support Agent]: Aqui constou o endereço antigo mesmo. Vou solicitar correção imediata.
 CHAT38
 
- Conversation.create!(channel: "Instagram", content: conversas_38, user_id: user.id)
+ Conversation.create!(channel: "Instagram", content: conversas_38, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_39 = <<~CHAT39
  [Customer]: Já errou uma vez, eu não confio mais. Quero cancelar.
@@ -544,7 +559,7 @@ conversas_39 = <<~CHAT39
  [Support Agent]: Sinto muito pela experiência e espero que possamos te atender melhor no futuro.
 CHAT39
 
-Conversation.create!(channel: "Whatsapp", content: conversas_39, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_39, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 #Erro no Cupom (8)
 conversas_40 = <<~CHAT40
@@ -558,7 +573,7 @@ conversas_40 = <<~CHAT40
  [Support Agent]: Você tem razão, houve falha na divulgação. Vou gerar um cupom manual pra você agora.
 CHAT40
 
-Conversation.create!(channel: "RA", content: conversas_40, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_40, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_41 = <<~CHAT41
  [Customer]: Eu apliquei o cupom, mas mesmo assim foi cobrado o valor cheio 😡
@@ -570,7 +585,7 @@ conversas_41 = <<~CHAT41
  [Support Agent]: Você está certa. Vou solicitar o estorno do valor do desconto imediatamente.
 CHAT41
 
-Conversation.create!(channel: "Instagram", content: conversas_41, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_41, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_42 = <<~CHAT42
  [Customer]: O cupom entra no carrinho mas some quando vou pagar 😤
@@ -581,7 +596,7 @@ conversas_42 = <<~CHAT42
  [Support Agent]: Sim, vejo seu histórico aqui. Vou liberar o desconto manualmente.
 CHAT42
 
-Conversation.create!(channel: "Instagram", content: conversas_42, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_42, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_43 = <<~CHAT43
  [Customer]: No celular o cupom não aplica, só no site normal.
@@ -592,7 +607,7 @@ conversas_43 = <<~CHAT43
  [Support Agent]: Não vai perder. Vou gerar um cupom exclusivo válido por 24h pra você.
 CHAT43
 
-Conversation.create!(channel: "Whatsapp", content: conversas_43, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_43, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_44 = <<~CHAT44
  [Customer]: Vi anúncio dizendo 20% OFF com cupom, mas não funciona!
@@ -604,7 +619,7 @@ conversas_44 = <<~CHAT44
 
 CHAT44
 
-Conversation.create!(channel: "Instagram", content: conversas_44, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_44, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_45 = <<~CHAT45
  [Customer]: O cupom diz que é válido, mas não entra no meu pedido.
@@ -616,7 +631,7 @@ conversas_45 = <<~CHAT45
 CHAT45
 
 
-Conversation.create!(channel: "RA", content: conversas_45, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_45, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_46 = <<~CHAT46
  [Customer]: Eu já tentei esse cupom umas 6 vezes, nada funciona.
@@ -628,7 +643,7 @@ conversas_46 = <<~CHAT46
 
 CHAT46
 
-Conversation.create!(channel: "Instagram", content: conversas_46, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_46, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_47 = <<~CHAT47
  [Customer]: Se não funcionar o cupom eu vou cancelar a compra.
@@ -641,7 +656,7 @@ conversas_47 = <<~CHAT47
  [Support Agent]: Consegui! Já ajustei e te enviei o novo link de pagamento. ✅
 CHAT47
 
-Conversation.create!(channel: "RA", content: conversas_47, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_47, user_id: user.id, occurred_on: random_date(start_date, end_date))
 #Solicitacao de NF (3)
 
 conversas_48 = <<~CHAT48
@@ -656,7 +671,7 @@ conversas_48 = <<~CHAT48
  [Support Agent]: Pode deixar comigo! Assim que estiver pronta, te envio em PDF e XML no seu e-mail.
 CHAT48
 
-Conversation.create!(channel: "Instagram", content: conversas_48, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_48, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_49 = <<~CHAT49
  [Customer]: Olá, eu recebi meu pedido já faz 5 dias, mas até agora nada da nota fiscal.
@@ -671,7 +686,7 @@ conversas_49 = <<~CHAT49
  [Support Agent]: Qualquer coisa é só me chamar!
 CHAT49
 
-Conversation.create!(channel: "RA", content: conversas_49, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_49, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_50 = <<~CHAT50
  [Customer]: Boa tarde. Preciso da nota fiscal, mas tem que ser emitida no CNPJ da minha loja.
@@ -689,7 +704,7 @@ conversas_50 = <<~CHAT50
 
 CHAT50
 
-Conversation.create!(channel: "Whatsapp", content: conversas_50, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_50, user_id: user.id, occurred_on: random_date(start_date, end_date))
 #Duvida de Produto (3)
 conversas_51 = <<~CHAT51
  [Customer]: Oi, boa noite. Tô olhando uma sandália de vocês, mas tô com medo de não aguentar usar o dia todo.
@@ -704,7 +719,7 @@ conversas_51 = <<~CHAT51
  [Support Agent]: Qualquer coisa, nossa política de troca é bem tranquila 💛
 CHAT51
 
-Conversation.create!(channel: "Whatsapp", content: conversas_51, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_51, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_52 = <<~CHAT52
  [Customer]: Boa tarde. Esse modelo “Luna Off White” tem forma grande ou pequena?
@@ -717,7 +732,7 @@ conversas_52 = <<~CHAT52
  [Support Agent]: Perfeito! Qualquer problema, a troca é sem custo na primeira vez.
 CHAT52
 
-Conversation.create!(channel: "Instagram", content: conversas_52, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_52, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_53 = <<~CHAT53
  [Customer]: Oi, tudo bem? Essa bota London Black é de couro mesmo?
@@ -730,7 +745,7 @@ conversas_53 = <<~CHAT53
  [Support Agent]: Eu que agradeço! Se precisar de qualquer outra dica, estou por aqui.
 CHAT53
 
-Conversation.create!(channel: "Instagram", content: conversas_53, user_id: user.id)
+Conversation.create!(channel: "Instagram", content: conversas_53, user_id: user.id, occurred_on: random_date(start_date, end_date))
 #Rastramento (3)
 
 conversas_54 = <<~CHAT54
@@ -747,7 +762,7 @@ conversas_54 = <<~CHAT54
  [Support Agent]: Entendo a urgência. Te retorno assim que a transportadora responder.
 CHAT54
 
-Conversation.create!(channel: "Whatsapp", content: conversas_54, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_54, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_55 = <<~CHAT55
  [Customer]: Oi, meu pedido aparece como entregue, mas não chegou nada aqui!
@@ -763,7 +778,7 @@ conversas_55 = <<~CHAT55
  [Support Agent]: O prazo é de até 48h para retorno, mas vou acompanhar pessoalmente seu caso.
 CHAT55
 
-Conversation.create!(channel: "Whatsapp", content: conversas_55, user_id: user.id)
+Conversation.create!(channel: "Whatsapp", content: conversas_55, user_id: user.id, occurred_on: random_date(start_date, end_date))
 
 conversas_56 = <<~CHAT56
  [Customer]: Meu pedido tá aparecendo como cancelado e em rota de entrega ao mesmo tempo 😵‍💫
@@ -779,4 +794,4 @@ conversas_56 = <<~CHAT56
  [Support Agent]: Você tem toda razão. Vou priorizar esse reenvio agora mesmo.
 CHAT56
 
-Conversation.create!(channel: "RA", content: conversas_56, user_id: user.id)
+Conversation.create!(channel: "RA", content: conversas_56, user_id: user.id, occurred_on: random_date(start_date, end_date))

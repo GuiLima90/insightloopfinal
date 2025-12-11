@@ -3,6 +3,9 @@ class ClassificationsController < ApplicationController
   def index
     @classifications = Classification.all
     @pareto = pareto_classifications
+    # inserir aqui tags que foram elegidas pelo pareto -> montar gráfico de tendência
+    pareto_tags = @pareto.map(&:tag)
+    @trend_series = conversation_trends_for(pareto_tags)
     # Get counts by tag, excluding blank tags (optional)
     counts_hash = Conversation
                     .joins(:classification)
@@ -26,8 +29,44 @@ class ClassificationsController < ApplicationController
     @chart_cumulative = cumulative
   end
 
-  def show
+   def show
     @classification = Classification.find(params[:id])
+
+    trend_hash = conversation_trends_for([@classification.tag])
+    trend      = trend_hash[@classification.tag] || { labels: [], values: [] }
+
+    @labels = trend[:labels]
+    raw_values = trend[:values]
+    @values = smooth_values(raw_values)
+
+
+  bucket_definitions = {
+    "Dia 1"  => (0..3),   # índices 0,1,2,3
+    "Dia 5"  => (4..8),
+    "Dia 10" => (9..13),
+    "Dia 15" => (14..18),
+    "Dia 20" => (19..23),
+    "Dia 25" => (24..28),
+    "Dia 30" => (29..29)
+  }
+
+  @volume_points = bucket_definitions.map do |label, range|
+    {
+      label: label,
+      count: raw_values[range].compact.sum
+    }
+  end
+
+  first_bucket = @volume_points.first[:count]
+  last_bucket  = @volume_points.last[:count]
+
+  @volume_change_pct =
+    if first_bucket.positive?
+      (((last_bucket - first_bucket) * 100.0) / first_bucket).round
+    else
+      nil
+    end
+
     @conversations = @classification.conversations.order("RANDOM()")
 
 
@@ -72,4 +111,53 @@ end
 
   end
 
+
+  private
+
+  def smooth_values(values)
+    return values if values.blank?
+
+    smoothed = values.dup
+
+    (1...smoothed.size).each do |i|
+      prev = smoothed[i - 1]
+      curr = smoothed[i]
+
+      if curr == 0 && prev > 0
+        smoothed[i] = (prev * 0.7).round
+      end
+    end
+
+    smoothed
+  end
+
+  def conversation_trends_for(tags, days: 30)
+    return {} if tags.blank?
+
+    start_date = (days - 1).days.ago.to_date
+    end_date   = Date.current
+
+    raw_counts = Conversation
+      .joins(:classification)
+      .where(classifications: { tag: tags })
+      .where(occurred_on: start_date..end_date)
+      .group("classifications.tag", "conversations.occurred_on")
+      .order("classifications.tag", "conversations.occurred_on")
+      .count
+
+    trends = Hash.new { |h, k| h[k] = Hash.new(0) }
+
+    raw_counts.each do |(tag, date), count|
+      trends[tag][date] = count
+    end
+
+    trends.transform_values do |per_day_hash|
+    all_dates = (start_date..end_date).to_a
+
+    {
+      labels: all_dates.each_with_index.map { |_, idx| "Dia #{idx + 1}" },
+      values: all_dates.map { |d| per_day_hash[d] || 0 }
+    }
+    end
+  end
 end
