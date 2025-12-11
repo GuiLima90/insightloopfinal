@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>InsightLoop — Customer Success Intelligence</title>
 <meta name="description" content="Plataforma B2B SaaS para E-commerce Customer Success — Análise de tickets e automação com IA" />
-
+<meta name="turbo-cache-control" content="no-cache" />
 
 <!-- Fonts / CSS (replace with your toolchain or Tailwind build) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -58,7 +58,7 @@ header{height:64px;border-bottom:1px solid #e6e9ee;display:flex;align-items:cent
 <ul>
   <% @classifications.each do |classification| %>
     <li>
-      <%= link_to classification.tag, classification_path(classification) %>
+      <%= link_to classification.tag, classification_path(classification), data: { turbo: false } %>
     </li>
   <% end %>
 </ul>
