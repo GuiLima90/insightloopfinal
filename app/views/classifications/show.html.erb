@@ -43,26 +43,25 @@
 <script>
   function renderVolumeChart() {
     const canvasId = "volumeTrendChart-<%= @classification.id %>";
-    const ctx = document.getElementById(canvasId);
+    const canvas   = document.getElementById(canvasId);
+    if (!canvas) return;
 
-    // Se não achar o canvas ou Chart.js não estiver pronto, aborta
-    if (!ctx || !window.Chart) return;
+    // se já existir um chart neste canvas, destrói antes
+    if (canvas._chartInstance) {
+      canvas._chartInstance.destroy();
+    }
 
-    // Evita recriar o gráfico se a página for reprocessada pelo Turbo
-    if (ctx.dataset.chartInitialized === "true") return;
-    ctx.dataset.chartInitialized = "true";
-
-    const labels = <%= raw @volume_points.map { |p| p[:label] }.to_json %>;
+    const labels     = <%= raw @volume_points.map { |p| p[:label] }.to_json %>;
     const dataValues = <%= raw @volume_points.map { |p| p[:count] }.to_json %>;
 
-    new Chart(ctx, {
+    const chart = new Chart(canvas, {
       type: "line",
       data: {
         labels: labels,
         datasets: [{
           data: dataValues,
           fill: true,
-          tension: 0.4, // curva suave
+          tension: 0.4,
           borderColor: "#f04438",
           backgroundColor: "rgba(240, 68, 56, 0.10)",
           pointRadius: 0,
@@ -72,6 +71,20 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
+
+        // 👇 ANIMAÇÃO FORÇADA NO EIXO Y
+        animations: {
+          y: {
+            // começa “vindo” da linha do zero
+            from: (ctx) => {
+              const scale = ctx.chart.scales.y;
+              return scale.getPixelForValue(0);
+            },
+            duration: 1000,        // 1 segundo
+            easing: "easeOutQuad"  // entra rápido, desacelera suave
+          }
+        },
+
         plugins: {
           legend: { display: false }
         },
@@ -87,11 +100,13 @@
         }
       }
     });
+
+    // guarda referência do chart no próprio canvas
+    canvas._chartInstance = chart;
   }
 
-  // Faz funcionar tanto no primeiro load quanto nas navegações Turbo
-  document.addEventListener("DOMContentLoaded", renderVolumeChart);
   document.addEventListener("turbo:load", renderVolumeChart);
+  document.addEventListener("DOMContentLoaded", renderVolumeChart);
 </script>
 
     <!-- DIREITA: CARROSSEL -->
