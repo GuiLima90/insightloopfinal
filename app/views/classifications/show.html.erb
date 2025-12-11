@@ -15,28 +15,82 @@
 <div class="container mt-4 mb-5">
   <div class="row align-items-stretch">
 
-    <!-- ESQUERDA: GRÁFICO (VAZIO) -->
-    <div class="col-md-6">
-      <div class="card p-4 shadow-sm text-center h-100" style="min-height: 280px;">
-        <h5 class="text-muted">📈 Tendência de Volume</h5>
-        <table class="table table-sm w-auto">
-          <thead>
-            <tr>
-              <th>Dia</th>
-              <th class="text-end">Conversas</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @volume_points.each do |point| %>
-              <tr>
-                <td><%= point[:label] %></td>
-                <td class="text-end"><%= point[:count] %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+<!-- ESQUERDA: GRÁFICO + INFO -->
+<div class="col-md-6">
+  <div class="card p-4 shadow-sm h-100" style="min-height: 300px;">
+
+    <!-- Título + badge de aumento -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h5 class="mb-1">Tendência de Volume</h5>
+        <p class="text-muted small mb-0">Últimos 30 dias</p>
       </div>
+
+      <% if @volume_change_pct.present? %>
+        <span class="badge rounded-pill px-3 py-2" style="background:#ffecec; color:#d64545;">
+          ↑ <%= @volume_change_pct %>% aumento de volume
+        </span>
+      <% end %>
     </div>
+
+    <!-- GRÁFICO -->
+    <div style="height: 260px;">
+      <canvas id="volumeTrendChart-<%= @classification.id %>"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+  function renderVolumeChart() {
+    const canvasId = "volumeTrendChart-<%= @classification.id %>";
+    const ctx = document.getElementById(canvasId);
+
+    // Se não achar o canvas ou Chart.js não estiver pronto, aborta
+    if (!ctx || !window.Chart) return;
+
+    // Evita recriar o gráfico se a página for reprocessada pelo Turbo
+    if (ctx.dataset.chartInitialized === "true") return;
+    ctx.dataset.chartInitialized = "true";
+
+    const labels = <%= raw @volume_points.map { |p| p[:label] }.to_json %>;
+    const dataValues = <%= raw @volume_points.map { |p| p[:count] }.to_json %>;
+
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          data: dataValues,
+          fill: true,
+          tension: 0.4, // curva suave
+          borderColor: "#f04438",
+          backgroundColor: "rgba(240, 68, 56, 0.10)",
+          pointRadius: 0,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: {
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            grid: { color: "rgba(0, 0, 0, 0.04)" },
+            ticks: { precision: 0 }
+          }
+        }
+      }
+    });
+  }
+
+  // Faz funcionar tanto no primeiro load quanto nas navegações Turbo
+  document.addEventListener("DOMContentLoaded", renderVolumeChart);
+  document.addEventListener("turbo:load", renderVolumeChart);
+</script>
 
     <!-- DIREITA: CARROSSEL -->
     <div class="col-md-6">

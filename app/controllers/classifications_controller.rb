@@ -18,17 +18,6 @@ class ClassificationsController < ApplicationController
     raw_values = trend[:values]
     @values = smooth_values(raw_values)
 
-        if @values.present?
-      (1...@values.size).each do |i|
-        prev = @values[i - 1]
-        curr = @values[i]
-
-        if curr == 0 && prev > 0
-          @values[i] = (prev * 0.7).round
-        end
-      end
-    end
-
 
   bucket_definitions = {
     "Dia 1"  => (0..3),   # índices 0,1,2,3
@@ -46,6 +35,16 @@ class ClassificationsController < ApplicationController
       count: raw_values[range].compact.sum
     }
   end
+
+  first_bucket = @volume_points.first[:count]
+  last_bucket  = @volume_points.last[:count]
+
+  @volume_change_pct =
+    if first_bucket.positive?
+      (((last_bucket - first_bucket) * 100.0) / first_bucket).round
+    else
+      nil
+    end
 
     @conversations = @classification.conversations.order("RANDOM()")
 
