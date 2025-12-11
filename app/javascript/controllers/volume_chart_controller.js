@@ -28,21 +28,32 @@ export default class extends Controller {
           borderColor: "#f04438",
           backgroundColor: "rgba(240, 68, 56, 0.10)",
           pointRadius: 0,
+          pointHitRadius: 12,
           borderWidth: 2
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        interaction: {
+          mode: "index",
+          intersect: false
+        },
+        hover: {
+          mode: "index",
+          intersect: false
+        },
+
         plugins: {
           legend: { display: false },
           tooltip: {
             enabled: true,
+            usePointStyle: false,
             callbacks: {
-              label: (context) => {
+              label: function(context) {
                 const label = context.label || ""
                 const value = context.formattedValue || "0"
-                return `${label} — ${value} conversas`
+                return `volume: ${value} conversas`
               }
             }
           }
