@@ -1,0 +1,171 @@
+.conversations-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.conversations-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.conversations-count {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #6b7280;   /* cinza elegante */
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+
+.conversation-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f2f2f2;
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+
+.conversation-left {
+  display: flex;
+  gap: 16px;
+}
+
+.conversation-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e8e9ff;
+  color: #4b5cff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.conversation-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.conversation-name {
+  font-weight: 600;
+  margin: 0;
+}
+
+.conversation-subtitle {
+  font-size: 0.85rem;
+  color: #444;
+  margin: 0;
+  font-weight: 600;
+
+}
+
+.conversation-preview {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0;
+}
+
+.conversation-mood {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 4px;
+}
+
+.conversation-right {
+  display: flex;
+  align-items: center;
+}
+
+.conversation-arrow {
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #999;
+}
+
+.conversation-arrow:hover {
+  color: #333;
+}
+
+/* BADGES GERAIS */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 999px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* STATUS */
+.badge.status.ativa {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.badge.status.pendente {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge.status.resolvida {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+/* PRIORIDADE */
+.badge.priority.alta {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge.priority.media {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge.priority.baixa {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+//* HUMOR / FRUSTRAÇÃO (BADGE) */
+.badge.mood {
+  max-width: 120px;   /* aumenta aqui */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Confuso → roxo */
+.badge.mood.confuso {
+  background: #ede9fe;
+  color: #6b21a8;
+}
+
+/* Frustrado → vermelho */
+.badge.mood.frustrado {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Aguardando → amarelo */
+.badge.mood.aguardando {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Nervoso → laranja */
+.badge.mood.nervoso {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+/* Preocupado → azul */
+.badge.mood.preocupado {
+  background: #e0f2fe;
+  color: #0369a1;
+}
