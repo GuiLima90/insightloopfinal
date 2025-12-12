@@ -47,6 +47,13 @@ export default class extends Controller {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+          duration: 900,
+          easing: "easeOutQuart"
+        },
+        animations: {
+          y: { from: 0 } // “fermento”: sobe do zero
+        },
         plugins: {
           legend: {
             position: "bottom",
