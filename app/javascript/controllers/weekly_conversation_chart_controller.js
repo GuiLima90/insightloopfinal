@@ -28,11 +28,13 @@ export default class extends Controller {
       return {
         label: ds.label,
         data: ds.data,
-        backgroundColor: this.withAlpha(cssVar || "#888", 0.35),
-        borderColor: this.withAlpha(cssVar || "#888", 0.9),
-        borderWidth: 1,
+        backgroundColor: this.withAlpha(cssVar || "#888", 0.85),
+        borderColor: this.withAlpha(cssVar || "#888", 1),
+        borderWidth: 0,
         borderRadius: 6,
-        maxBarThickness: 26
+        maxBarThickness: 44,    // limite
+        categoryPercentage: 0.75,
+        barPercentage: 0.7
       }
     })
 
@@ -45,6 +47,13 @@ export default class extends Controller {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+          duration: 900,
+          easing: "easeOutQuart"
+        },
+        animations: {
+          y: { from: 0 } // “fermento”: sobe do zero
+        },
         plugins: {
           legend: {
             position: "bottom",

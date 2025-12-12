@@ -11,12 +11,104 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  <style>
+  /* ===== ROOT CAUSE CARD ===== */
+  .root-cause-card{
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid rgba(214, 69, 69, 0.10);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* faixa suave no topo (bem sutil) */
+
+  .root-cause-header{
+    position: relative;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .root-cause-title{
+    display:block;
+    align-items:center;
+    gap:10px;
+    margin:0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color:#1f2937;
+  }
+
+  .root-cause-icon{
+    width: 34px; height: 34px;
+    border-radius: 12px;
+    background:#fff0f0;
+    color:#d64545;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink: 0;
+    border: 1px solid rgba(214,69,69,0.15);
+  }
+
+  .root-cause-badge{
+    position: relative;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background:#f3ebff;
+    color:#7a3ff2;
+    border: 1px solid #e1d4ff;
+    white-space: nowrap;
+  }
+
+  .root-cause-sub{
+    position: relative;
+    margin: 4px 0 12px 0px;
+    color:#6b7280;
+    font-size: 0.82rem;
+  }
+
+  .root-cause-body{
+    position: relative;
+    margin-left: 0px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #f9fafb;
+    border: 1px solid #eef2f7;
+    color:#111827;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  /* quebra de linha do texto vindo do LLM, se vier com \n */
+  .root-cause-body p{
+    margin: 0;
+    white-space: pre-line;
+  }
+
+  /* “linha” lateral de destaque */
+  .root-cause-accent{
+    position:absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: #e5e7eb;
+    opacity: 1;
+  }
 </style>
 
 
-
 <div style="background-color: #fcf7f7; min-height: 100vh; padding: 24px 0;">
-  <div class="container" style="max-width: 1100px;">
+  <div class="container" style="max-width: 1230px;">
 
     <% volume_options = [18, 25, 32, 45] %>
     <% volume_pct = volume_options.sample %>
@@ -110,11 +202,11 @@
         </div>
 
         <!-- CARROSSEL -->
-        <div class="col-lg-6">
+        <div class="col-md-6">
           <div class="card h-100 shadow-sm  d-flex flex-column"
                style="border-radius: 16px; background: #ffffff; ">
             <div class="card-body d-flex flex-column">
-              <h3 class="mb-3" style="font-size: 0.95rem; font-weight: 600;">Voz do Cliente</h3>
+              <h3 class="mb-3" style="font-size: 1.35rem; font-weight: 700;">Voz do Cliente</h3>
 
               <% if @conversations.present? %>
                 <div id="conversationCarousel"
@@ -225,13 +317,25 @@
     </section>
 
 
-      <% if @ia_root_cause.present? %>
-        <div class="card p-4 shadow-sm mb-4" style="border-radius: 14px;  background: #ffffff;">
-          <h4><strong>Diagnóstico da Causa Raiz</strong></h4>
-          <p class="text-muted small">Análise baseada em IA</p>
+    <% if @ia_root_cause.present? %>
+      <div class="card p-4 mb-4 root-cause-card">
+        <span class="root-cause-accent"></span>
+
+        <div class="root-cause-header">
+          <div>
+            <h4 class="root-cause-title">
+              Diagnóstico da Causa Raiz
+            </h4>
+            <p class="root-cause-sub">Análise baseada em IA</p>
+          </div>
+
+        </div>
+
+        <div class="root-cause-body">
           <p><%= @ia_root_cause %></p>
         </div>
-      <% end %>
+      </div>
+    <% end %>
 
       <section class="mb-5">
         <div class="text-center mb-3 mt-4">
