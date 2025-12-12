@@ -67,7 +67,9 @@ class ClassificationsController < ApplicationController
       nil
     end
 
-    @conversations = @classification.conversations.order("RANDOM()")
+   @conversations = @classification.conversations
+                                 .order(created_at: :desc)
+                                 .limit(3)
 
 
   if @classification.improvements.empty?
