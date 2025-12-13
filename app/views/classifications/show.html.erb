@@ -181,95 +181,95 @@
       </div>
     <% end %>
 
-    <!-- ✅ ROADMAP (voltou!) -->
-    <% if @improvement.present? %>
-      <section class="mb-5">
-        <div class="roadmap-header">
-          <h2>Roadmap Estratégico</h2>
-          <p class="text-muted mb-0">Ações priorizadas por IA para resolver esse problema</p>
+    <!-- ✅ ROADMAP -->
+<% if @improvement.present? %>
+  <section class="mb-5 roadmap-section">
+    <div class="roadmap-container">
+
+      <header class="roadmap-header">
+        <h2>Roadmap Estratégico</h2>
+        <p>Ações priorizadas por IA para resolver esse problema</p>
+      </header>
+
+      <% texto = @improvement.content.to_s %>
+      <% curto = texto.split("Curto Prazo:").last&.split("Médio Prazo:")&.first %>
+      <% medio = texto.split("Médio Prazo:").last&.split("Longo Prazo:")&.first %>
+      <% longo = texto.split("Longo Prazo:").last %>
+
+      <div class="row g-4 pt-2">
+        <!-- CURTO -->
+        <div class="col-md-4">
+          <div class="roadmap-card">
+            <div class="roadmap-title">
+              <span class="roadmap-icon roadmap-icon--short"><i class="fa-solid fa-bolt"></i></span>
+              <div>
+                <h3>Curto Prazo</h3>
+                <p>1–2 semanas</p>
+              </div>
+            </div>
+
+            <div class="d-flex flex-column gap-2">
+              <% curto.to_s.lines.each do |linha| %>
+                <% next unless linha.start_with?("-", "✅") %>
+                <div class="roadmap-item">
+                  <span class="roadmap-item__icon roadmap-icon--short"><i class="fa-solid fa-bolt"></i></span>
+                  <span class="roadmap-item__text"><%= linha.gsub("✅","").gsub("-","").strip %></span>
+                  <span class="badge rounded-pill badge-difficulty badge-difficulty--easy">Fácil</span>
+                </div>
+              <% end %>
+            </div>
+          </div>
         </div>
 
-        <% texto = @improvement.content.to_s %>
-        <% curto = texto.split("Curto Prazo:").last&.split("Médio Prazo:")&.first %>
-        <% medio = texto.split("Médio Prazo:").last&.split("Longo Prazo:")&.first %>
-        <% longo = texto.split("Longo Prazo:").last %>
-
-        <div class="row g-4 pt-2">
-          <!-- CURTO -->
-          <div class="col-md-4">
-            <div class="roadmap-card">
-              <div class="roadmap-title">
-                <span class="roadmap-icon roadmap-icon--short"><i class="fa-solid fa-bolt"></i></span>
-                <div>
-                  <h3>Curto Prazo</h3>
-                  <p>1–2 semanas</p>
-                </div>
-              </div>
-
-              <div class="d-flex flex-column gap-2">
-                <% curto.to_s.lines.each do |linha| %>
-                  <% next unless linha.start_with?("-", "✅") %>
-                  <div class="roadmap-item">
-                    <span class="roadmap-item__icon roadmap-icon--short"><i class="fa-solid fa-bolt"></i></span>
-                    <span class="roadmap-item__text"><%= linha.gsub("✅","").gsub("-","").strip %></span>
-                    <span class="badge rounded-pill badge-difficulty badge-difficulty--easy">Fácil</span>
-                  </div>
-                <% end %>
+        <!-- MÉDIO -->
+        <div class="col-md-4">
+          <div class="roadmap-card">
+            <div class="roadmap-title">
+              <span class="roadmap-icon roadmap-icon--mid"><i class="fa-solid fa-sync"></i></span>
+              <div>
+                <h3>Médio Prazo</h3>
+                <p>1–3 meses</p>
               </div>
             </div>
-          </div>
 
-          <!-- MÉDIO -->
-          <div class="col-md-4">
-            <div class="roadmap-card">
-              <div class="roadmap-title">
-                <span class="roadmap-icon roadmap-icon--mid"><i class="fa-solid fa-sync"></i></span>
-                <div>
-                  <h3>Médio Prazo</h3>
-                  <p>1–3 meses</p>
+            <div class="d-flex flex-column gap-2">
+              <% medio.to_s.lines.each do |linha| %>
+                <% next unless linha.start_with?("-", "✅") %>
+                <div class="roadmap-item">
+                  <span class="roadmap-item__icon roadmap-icon--mid"><i class="fa-solid fa-sync"></i></span>
+                  <span class="roadmap-item__text"><%= linha.gsub("✅","").gsub("-","").strip %></span>
+                  <span class="badge rounded-pill badge-difficulty badge-difficulty--mid">Médio</span>
                 </div>
-              </div>
-
-              <div class="d-flex flex-column gap-2">
-                <% medio.to_s.lines.each do |linha| %>
-                  <% next unless linha.start_with?("-", "✅") %>
-                  <div class="roadmap-item">
-                    <span class="roadmap-item__icon roadmap-icon--mid"><i class="fa-solid fa-sync"></i></span>
-                    <span class="roadmap-item__text"><%= linha.gsub("✅","").gsub("-","").strip %></span>
-                    <span class="badge rounded-pill badge-difficulty badge-difficulty--mid">Médio</span>
-                  </div>
-                <% end %>
-              </div>
+              <% end %>
             </div>
           </div>
-
-          <!-- LONGO -->
-          <div class="col-md-4">
-            <div class="roadmap-card">
-              <div class="roadmap-title">
-                <span class="roadmap-icon roadmap-icon--long"><i class="fa-solid fa-rocket"></i></span>
-                <div>
-                  <h3>Longo Prazo</h3>
-                  <p>3–12 meses</p>
-                </div>
-              </div>
-
-              <div class="d-flex flex-column gap-2">
-                <% longo.to_s.lines.each do |linha| %>
-                  <% next unless linha.start_with?("-", "✅") %>
-                  <div class="roadmap-item">
-                    <span class="roadmap-item__icon roadmap-icon--long"><i class="fa-solid fa-rocket"></i></span>
-                    <span class="roadmap-item__text"><%= linha.gsub("✅","").gsub("-","").strip %></span>
-                    <span class="badge rounded-pill badge-difficulty badge-difficulty--hard">Complexo</span>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </section>
-    <% end %>
 
-  </div>
-</div>
+        <!-- LONGO -->
+        <div class="col-md-4">
+          <div class="roadmap-card">
+            <div class="roadmap-title">
+              <span class="roadmap-icon roadmap-icon--long"><i class="fa-solid fa-rocket"></i></span>
+              <div>
+                <h3>Longo Prazo</h3>
+                <p>3–12 meses</p>
+              </div>
+            </div>
+
+            <div class="d-flex flex-column gap-2">
+              <% longo.to_s.lines.each do |linha| %>
+                <% next unless linha.start_with?("-", "✅") %>
+                <div class="roadmap-item">
+                  <span class="roadmap-item__icon roadmap-icon--long"><i class="fa-solid fa-rocket"></i></span>
+                  <span class="roadmap-item__text"><%= linha.gsub("✅","").gsub("-","").strip %></span>
+                  <span class="badge rounded-pill badge-difficulty badge-difficulty--hard">Complexo</span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+<% end %>
