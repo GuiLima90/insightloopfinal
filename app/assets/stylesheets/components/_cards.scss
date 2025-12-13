@@ -1,0 +1,67 @@
+.card-soft {
+  border-radius: $radius-lg;
+  background: #fff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+}
+
+.chart-card {
+  min-height: 300px;
+}
+
+.chart-wrap {
+  height: 220px;
+}
+
+.carousel-card__title {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.carousel-footer {
+  background: #f8f9fb;
+  border-radius: 0 0 $radius-lg $radius-lg;
+}
+
+.root-cause-card {
+  border-radius: $radius-lg;
+  background: #fff;
+  border: 1px solid rgba(214, 69, 69, 0.10);
+  box-shadow: $shadow-soft;
+  position: relative;
+  overflow: hidden;
+
+  &__accent {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: $gray-200;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: $gray-700;
+  }
+
+  &__sub {
+    margin: 4px 0 12px 0;
+    font-size: 0.82rem;
+    color: $gray-500;
+  }
+
+  &__body {
+    padding: 12px 14px;
+    border-radius: $radius-md;
+    background: $gray-100;
+    border: 1px solid #eef2f7;
+    color: $gray-900;
+    font-size: 0.92rem;
+    line-height: 1.55;
+
+    p {
+      margin: 0;
+      white-space: pre-line;
+    }
+  }
+}

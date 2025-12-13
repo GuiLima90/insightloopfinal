@@ -1,0 +1,49 @@
+.roadmap-header {
+  text-align: center;
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: $gray-500;
+  }
+}
+
+.roadmap-card {
+  height: 220px;
+  overflow-y: auto;
+  border-radius: 14px;
+}
+
+.roadmap-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &--short { background: #e6f6ed; }
+  &--mid   { background: #e8f3ff; }
+  &--long  { background: #ffe8e8; }
+}
+
+.roadmap-item {
+  height: 70px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f5eded;
+  cursor: pointer;
+}
+
+.badge-difficulty {
+  font-size: 0.7rem;
+
+  &--easy { background: #e6f6ed; color: #198754; }
+  &--mid  { background: #e7f0ff; color: #0d6efd; }
+  &--hard { background: #ffecec; color: $danger; }
+}
