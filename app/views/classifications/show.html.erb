@@ -168,16 +168,14 @@
 
     <% if @ia_root_cause.present? %>
       <div class="card p-4 mb-4 root-cause-card">
-        <span class="root-cause-accent"></span>
+        <span class="root-cause-card__accent"></span>
 
-        <div class="root-cause-header">
-          <div>
-            <h4 class="root-cause-title">Diagnóstico da Causa Raiz</h4>
-            <p class="root-cause-sub">Análise baseada em IA</p>
-          </div>
+        <div class="root-cause-card__header">
+          <h4 class="root-cause-card__title">Diagnóstico da Causa Raiz</h4>
+          <p class="root-cause-card__sub">Análise baseada em IA</p>
         </div>
 
-        <div class="root-cause-body">
+        <div class="root-cause-card__body">
           <p><%= @ia_root_cause %></p>
         </div>
       </div>

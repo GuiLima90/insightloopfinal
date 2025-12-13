@@ -23,18 +23,25 @@
 }
 
 .root-cause-card {
+  position: relative;
   border-radius: $radius-lg;
   background: #fff;
-  border: 1px solid rgba(214, 69, 69, 0.10);
+  border: 1px solid $gray-200; // ← troca aqui
   box-shadow: $shadow-soft;
-  position: relative;
   overflow: hidden;
 
   &__accent {
     position: absolute;
-    left: 0; top: 0; bottom: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
     width: 4px;
     background: $gray-200;
+  }
+
+  &__header {
+    position: relative;
+    margin-bottom: 12px;
   }
 
   &__title {
@@ -51,7 +58,7 @@
   }
 
   &__body {
-    padding: 12px 14px;
+    padding: 14px 16px; // um pouco mais confortável
     border-radius: $radius-md;
     background: $gray-100;
     border: 1px solid #eef2f7;

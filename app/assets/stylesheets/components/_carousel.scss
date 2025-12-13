@@ -1,0 +1,31 @@
+.conversation-carousel {
+  .carousel-item {
+    height: 180px;
+    overflow: hidden;
+
+    p {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 30px;
+    height: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .carousel-control-prev {
+    left: -2px;
+  }
+
+  .carousel-control-next {
+    right: -2px;
+  }
+}
+
