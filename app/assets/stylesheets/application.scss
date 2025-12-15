@@ -24,6 +24,12 @@
 // @import "pages/classification_show";
 @import "pages/conversations";
 
+@import "base/variables";
+@import "components/cards";
+@import "components/carousel";
+@import "components/roadmap";
+@import "pages/strategic_plan";
+
 .main {
   max-width: 1200px;
   margin: 0 auto;
