@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   get "dashboard", to: "pages#dashboard"
   devise_for :users
   root to: "pages#dashboard"
+  get "product_insights", to: "pages#product_insights"
+get "product_insights/:id", to: "pages#product_insight", as: :product_insight
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

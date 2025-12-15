@@ -85,10 +85,12 @@ class PagesController < ApplicationController
   def product_insights
     @conversations = Conversation
       .order(occurred_on: :desc)
+      render "pages/product_insights_index"
   end
 
   def product_insight
     @conversation = Conversation.find(params[:id])
+     render "pages/product_insight_show"
   end
 
 end

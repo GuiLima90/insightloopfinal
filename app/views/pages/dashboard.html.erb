@@ -148,7 +148,10 @@
         </div>
 
         <button class="kpi-card__button kpi-card__button--product">
-          View Product Insights
+          <%= link_to product_insights_path, class: "dashboard-item" do %>
+          <i class="fa-solid fa-lightbulb"></i>
+            <span>View Product Insights</span>
+          <% end %>
         </button>
       </div>
     </article>
