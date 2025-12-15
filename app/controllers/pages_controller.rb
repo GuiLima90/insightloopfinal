@@ -2,6 +2,9 @@ class PagesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:home]
 
   def dashboard
+    # --------------------------------------------------
+    # 1️⃣ Date range (single source of truth)
+    # --------------------------------------------------
     @start_date =
       params[:start_date]&.to_date ||
       Conversation.minimum(:occurred_on)
@@ -10,21 +13,56 @@ class PagesController < ApplicationController
       params[:end_date]&.to_date ||
       Conversation.maximum(:occurred_on)
 
-    scope = Conversation.where(occurred_on: @start_date..@end_date)
+    base_scope = Conversation.where(occurred_on: @start_date..@end_date)
 
-    @conversation_questions_count  = scope.count
-    @conversation_complaints_count = scope.count
-    @conversation_insights_count   = scope.count
+    # --------------------------------------------------
+    # 2️⃣ KPIs (still work exactly as before)
+    # --------------------------------------------------
+    @conversation_questions_count  = base_scope.count
+    @conversation_complaints_count = base_scope.count
+    @conversation_insights_count   = base_scope.count
 
+    # --------------------------------------------------
+    # 3️⃣ Button state (UNCHANGED behavior)
+    # --------------------------------------------------
     range_type = params[:range_type]
 
-    # 🔵 Preset buttons active only when range_type == "preset"
     @active_preset =
       range_type == "preset" ? active_preset(@start_date, @end_date) : nil
 
-    # 🔵 Aplicar button active only when range_type == "custom"
     @custom_range_active =
       range_type == "custom"
+
+    # --------------------------------------------------
+    # 4️⃣ Decide chart grouping based on time span
+    # --------------------------------------------------
+    range_days = (@end_date - @start_date).to_i
+
+    if range_days <= 14
+      sql_group = "DATE(occurred_on)"
+      label_format = "%a"            # Mon, Tue…
+    elsif range_days <= 90
+      sql_group = "DATE_TRUNC('week', occurred_on)"
+      label_format = "W%U"            # Week number
+    else
+      sql_group = "DATE_TRUNC('month', occurred_on)"
+      label_format = "%b %Y"          # Jan 2025
+    end
+
+    # --------------------------------------------------
+    # 5️⃣ Chart data (dynamic + grouped)
+    # --------------------------------------------------
+    @chart_series = Conversation
+      .where(occurred_on: @start_date..@end_date)
+      .group(Arel.sql(sql_group))
+      .order(Arel.sql(sql_group))
+      .count
+      .map do |period, count|
+        {
+          label: period.to_date.strftime(label_format),
+          value: count
+        }
+      end
   end
 
   def home
@@ -32,7 +70,9 @@ class PagesController < ApplicationController
 
   private
 
-  # 🔵 Determines which preset is currently applied
+  # --------------------------------------------------
+  # 6️⃣ Preset detection (unchanged)
+  # --------------------------------------------------
   def active_preset(start_date, end_date)
     today = Date.today
 

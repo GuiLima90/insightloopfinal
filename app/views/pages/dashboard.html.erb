@@ -154,19 +154,34 @@
     </article>
   </section>
 
-  <!-- GRÁFICO -->
-  <section class="panel">
-    <div class="panel__header">
-      <h2 class="panel__title">Weekly Conversation Trend</h2>
-      <p class="panel__subtitle">Distribution by type over the last 7 days</p>
-    </div>
+<!-- GRÁFICO -->
+<section class="panel">
+  <div class="panel__header">
+    <h2 class="panel__title">Conversation Trend</h2>
+    <p class="panel__subtitle">
+      From <%= @start_date.strftime('%d %b %Y') %>
+      to <%= @end_date.strftime('%d %b %Y') %>
+    </p>
+  </div>
 
-    <div
-      class="panel__body"
-      data-controller="weekly-conversation-chart"
-      data-weekly-conversation-chart-series-value='{"labels":["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],"datasets":[{"label":"Questions","data":[120,130,118,140,128,90,110],"color":"--questions"},{"label":"Complaints","data":[82,86,79,90,84,60,120],"color":"--complaints"},{"label":"Product","data":[75,72,80,78,82,65,95],"color":"--product"}]}'
-    >
-      <canvas data-weekly-conversation-chart-target="canvas"></canvas>
-    </div>
-  </section>
+  <% labels = @chart_series.map { |p| p[:label] } %>
+  <% values = @chart_series.map { |p| p[:value] } %>
+
+  <div
+    class="panel__body"
+    data-controller="weekly-conversation-chart"
+    data-weekly-conversation-chart-series-value='<%= {
+      labels: labels,
+      datasets: [
+        {
+          label: "Conversations",
+          data: values,
+          color: "--questions"
+        }
+      ]
+    }.to_json %>'
+  >
+    <canvas data-weekly-conversation-chart-target="canvas"></canvas>
+  </div>
+</section>
 </div>
