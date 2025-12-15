@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_15_142043) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "occurred_on", null: false
-    t.bigint "category_id", null: false
+    t.bigint "category_id"
     t.index ["category_id"], name: "index_conversations_on_category_id"
     t.index ["classification_id"], name: "index_conversations_on_classification_id"
     t.index ["user_id"], name: "index_conversations_on_user_id"
