@@ -5,6 +5,8 @@ class Conversation < ApplicationRecord
   before_validation :set_default_occurred_on, on: :create
   after_create :generate_classification
 
+  validates :category, inclusion: { in: CATEGORIES }, allow_nil: true
+
   private
 
   def set_default_occurred_on
