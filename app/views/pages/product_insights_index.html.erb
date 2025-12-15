@@ -1,55 +1,66 @@
-<h1 class="mb-1">Todas as Conversas</h1>
-<p class="text-muted mb-4">
-  <%= @conversations.count %> Conversas no Total
-</p>
+<%
+  customer_names = [
+    "Maria Silva", "Carlos Mendes", "João Santos",
+    "Ana Costa", "Aline K.", "Diego Z.",
+    "Eduardo N.", "Thiago B."
+  ]
 
-<div class="conversation-list">
+  fake_categories = ["Product Insight", "Questions", "Outros"]
+%>
+
+<div class="conversations-page">
+
+  <%= link_to dashboard_path, class: "back-link" do %>
+    <i class="fa-solid fa-arrow-left-long"></i>
+  <% end %>
+
+  <h1 class="conversations-title">Product Insights</h1>
+  <h2 class="conversations-count">
+    <%= @conversations.count %> Conversas no Total
+  </h2>
 
   <% @conversations.each do |conversation| %>
-    <div class="conversation-item d-flex align-items-center justify-content-between">
+    <div class="conversation-item">
 
-      <!-- LADO ESQUERDO -->
-      <div class="d-flex align-items-start gap-3">
+      <!-- ESQUERDA -->
+      <div class="conversation-left">
 
-        <!-- Avatar -->
-        <div class="avatar-circle">
-          C
+        <!-- AVATAR -->
+        <div class="conversation-avatar">
+          <%= customer_names[conversation.id % customer_names.size].first %>
         </div>
 
-        <!-- Conteúdo -->
-        <div>
-          <div class="d-flex align-items-center gap-2 mb-1">
-            <strong>Cliente</strong>
+        <div class="conversation-content">
 
-            <span class="badge bg-success-subtle text-success">
-              Ativa
-            </span>
+          <!-- NOME -->
+          <p class="conversation-name">
+            <%= customer_names[conversation.id % customer_names.size] %>
+          </p>
 
-            <span class="badge bg-secondary-subtle text-secondary">
-              Baixa
-            </span>
-          </div>
+          <!-- CATEGORIA (FICTÍCIA) -->
+          <p class="conversation-subtitle">
+            <%= fake_categories[conversation.id % fake_categories.size] %>
+          </p>
 
-          <div class="fw-semibold">
-            Product Insight
-          </div>
+          <!-- PREVIEW -->
+          <p class="conversation-preview">
+            <%= conversation.content
+                  .to_s
+                  .gsub(/\[.*?\]:/, "")
+                  .strip
+                  .truncate(120) %>
+          </p>
 
-          <div class="text-muted small">
-            <%= truncate(conversation.content, length: 90) %>
-          </div>
-
-          <span class="emotion-tag">
-            Confuso
-          </span>
         </div>
-
       </div>
 
-      <!-- SETA -->
-      <%= link_to product_insight_path(conversation),
-          class: "arrow-link" do %>
-        →
-      <% end %>
+      <!-- DIREITA (AÇÃO) -->
+      <div class="conversation-right">
+        <%= link_to product_insight_path(conversation),
+              class: "conversation-arrow" do %>
+          <i class="fa-solid fa-arrow-right-long"></i>
+        <% end %>
+      </div>
 
     </div>
   <% end %>
