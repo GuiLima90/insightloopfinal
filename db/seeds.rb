@@ -1027,7 +1027,7 @@ product_insights.each do |conversation|
   )
 end
 
-faq_conversations = [
+questions = [
 
 <<~CHAT,
 [Customer]: Oi! Tudo bem?
@@ -1366,7 +1366,7 @@ CHAT
 CHAT
 ]
 
-faq_conversations.each do |conversation|
+questions.each do |conversation|
   Conversation.create!(
     channel: "Whatsapp",
     content: conversation,
