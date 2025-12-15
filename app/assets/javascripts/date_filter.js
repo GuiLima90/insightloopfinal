@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const start = new Date(startInput.value);
     const end = new Date(endInput.value);
 
-    applyDateRange(start, end);
+    applyDateRange(start, end, "custom"); // 👈 NEW
   });
 
   // --- PRESET LOGIC ---
@@ -38,14 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (range === "1m") start.setMonth(end.getMonth() - 1);
     if (range === "3m") start.setMonth(end.getMonth() - 3);
 
-    applyDateRange(start, end);
+    applyDateRange(start, end, "preset"); // 👈 NEW
   }
 
   // --- URL PARAMS / REDIRECT ---
-  function applyDateRange(start, end) {
+  function applyDateRange(start, end, rangeType) {
     const params = new URLSearchParams({
       start_date: start.toISOString().slice(0, 10),
-      end_date: end.toISOString().slice(0, 10)
+      end_date: end.toISOString().slice(0, 10),
+      range_type: rangeType // 👈 NEW PARAM
     });
 
     window.location.search = params.toString();

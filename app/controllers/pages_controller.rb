@@ -16,14 +16,15 @@ class PagesController < ApplicationController
     @conversation_complaints_count = scope.count
     @conversation_insights_count   = scope.count
 
-    # 🔵 Preset detection (7d / 1m / 3m)
-    @active_preset = active_preset(@start_date, @end_date)
+    range_type = params[:range_type]
 
-    # 🔵 Custom range ("Aplicar") detection
+    # 🔵 Preset buttons active only when range_type == "preset"
+    @active_preset =
+      range_type == "preset" ? active_preset(@start_date, @end_date) : nil
+
+    # 🔵 Aplicar button active only when range_type == "custom"
     @custom_range_active =
-      params[:start_date].present? &&
-      params[:end_date].present? &&
-      @active_preset.nil?
+      range_type == "custom"
   end
 
   def home

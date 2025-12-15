@@ -39,15 +39,23 @@
         <div class="date-filter__custom">
           <label>
             Início
-            <input type="date" id="startDate" />
+            <input
+              type="date"
+              id="startDate"
+              value="<%= @start_date&.strftime('%Y-%m-%d') %>">
           </label>
           <label>
             Fim
-            <input type="date" id="endDate" />
+            <input
+              type="date"
+              id="endDate"
+              value="<%= @end_date&.strftime('%Y-%m-%d') %>">
           </label>
-          <button class="apply-btn" id="applyCustomRange">
-            Aplicar
-          </button>
+            <button
+              id="applyCustomRange"
+              class="apply-btn <%= 'active' if @custom_range_active %>">
+              Aplicar
+            </button>
         </div>
       </div>
     </div>
