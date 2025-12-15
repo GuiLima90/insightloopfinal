@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_10_203239) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_15_162717) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_10_203239) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["classification_id"], name: "index_analyses_on_classification_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "classifications", force: :cascade do |t|
@@ -51,6 +58,24 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_10_203239) do
     t.index ["user_id"], name: "index_improvements_on_user_id"
   end
 
+  create_table "product_insights", force: :cascade do |t|
+    t.string "title"
+    t.text "analysis"
+    t.text "solution"
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_product_insights_on_category_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.string "content"
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_questions_on_category_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -71,4 +96,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_10_203239) do
   add_foreign_key "conversations", "users"
   add_foreign_key "improvements", "classifications"
   add_foreign_key "improvements", "users"
+  add_foreign_key "product_insights", "categories"
+  add_foreign_key "questions", "categories"
 end
