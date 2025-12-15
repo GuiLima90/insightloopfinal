@@ -4,8 +4,6 @@
     "Ana Costa", "Aline K.", "Diego Z.",
     "Eduardo N.", "Thiago B."
   ]
-
-  fake_categories = ["Product Insight", "Questions", "Outros"]
 %>
 
 <div class="conversations-page">
@@ -15,6 +13,7 @@
   <% end %>
 
   <h1 class="conversations-title">Product Insights</h1>
+
   <h2 class="conversations-count">
     <%= @conversations.count %> Conversas no Total
   </h2>
@@ -24,8 +23,6 @@
 
       <!-- ESQUERDA -->
       <div class="conversation-left">
-
-        <!-- AVATAR -->
         <div class="conversation-avatar">
           <%= customer_names[conversation.id % customer_names.size].first %>
         </div>
@@ -37,24 +34,29 @@
             <%= customer_names[conversation.id % customer_names.size] %>
           </p>
 
-          <!-- CATEGORIA (FICTÍCIA) -->
+          <!-- TÍTULO (VEM DO SEED / CLASSIFICATION) -->
           <p class="conversation-subtitle">
-            <%= fake_categories[conversation.id % fake_categories.size] %>
+            <% case conversation.classification&.tag %>
+            <% when "Dúvida de Produto", "Rastreamento", "Solicitação de NF" %>
+              Perguntas & FAQ
+            <% when "Pedido Errado", "Produto Danificado", "Erro no Cupom" %>
+              Product Insight
+            <% else %>
+              Outros
+            <% end %>
           </p>
 
           <!-- PREVIEW -->
           <p class="conversation-preview">
-            <%= conversation.content
-                  .to_s
+            <%= conversation.content.to_s.lines.first
                   .gsub(/\[.*?\]:/, "")
-                  .strip
-                  .truncate(120) %>
+                  .strip %>
           </p>
 
         </div>
       </div>
 
-      <!-- DIREITA (AÇÃO) -->
+      <!-- DIREITA -->
       <div class="conversation-right">
         <%= link_to product_insight_path(conversation),
               class: "conversation-arrow" do %>
