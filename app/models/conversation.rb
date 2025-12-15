@@ -30,6 +30,8 @@ class Conversation < ApplicationRecord
       - Read the conversation content.
       - Choose ONLY ONE tag that represents the MAIN issue.
       - Choose ONLY ONE category that represents the TYPE of the conversation.
+      - If the conversation is a suggestion, feedback, compliment, or does NOT clearly fit any problem,
+    choose the tag "Outros".
 
       Available tags:
       #{tags}

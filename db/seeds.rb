@@ -42,6 +42,11 @@ solicitacao_nf = Classification.create!(
   tag_description: "Use esta tag quando o cliente pede nota fiscal, segunda via, correção ou informações sobre emissão da NF."
 )
 
+outros = Classification.create!(
+  tag: "Outros",
+  tag_description: "Use esta tag quando a conversa não representar um problema ou solicitação clara, mas sim feedbacks, sugestões, elogios, comentários gerais ou mensagens que não se encaixam nas demais classificações/tags."
+)
+
 Category.create!(
   name: "questions",
   description: "Utilize esta categoria quando o foco principal do cliente é perguntar, tirar dúvidas sobre algo, solicitando informações, apoio, ou um FAQ-style help. Nenhum incidente relevante, trata-se apenas de dúvidas e instruções sendo solicitadas."
