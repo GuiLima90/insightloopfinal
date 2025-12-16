@@ -2,22 +2,8 @@
 
   <!-- Header -->
   <div class="conversation-show__header">
-
-
-
-
-<h1 class="conversation-show__title">
-  <% case @conversation.classification&.tag %>
-  <% when "Dúvida de Produto", "Rastreamento", "Solicitação de NF" %>
-    Perguntas & FAQ
-  <% when "Pedido Errado", "Produto Danificado", "Erro no Cupom" %>
-    Product Insight
-  <% else %>
-    Outros
-  <% end %>
-</h1>
+      <h1 class="conversation-show__title"><%= @conversation.classification&.tag || "Aguardando classificação"%></h1>
   </div>
-
   <!-- Meta informações -->
   <div class="conversation-show__meta">
     <span class="meta-item">
@@ -28,7 +14,6 @@
       <strong>ID do Usuário:</strong> <%= @conversation.user_id %>
     </span>
   </div>
-
   <!-- Conteúdo da conversa -->
   <div class="conversation-thread">
     <h2>Conversa</h2>
@@ -48,10 +33,9 @@
       <% end %>
     <% end %>
   </div>
-
 </div>
 
-<%= link_to insight_list_conversations_path, class: "back-link" do %>
-  <i class="fa-solid fa-arrow-left-long"></i>
-  Voltar para lista
-<% end %>
+  <%= link_to insight_list_conversations_path, class: "back-link" do %>
+    <i class="fa-solid fa-arrow-left-long"></i>
+    Voltar para lista
+  <% end %>
