@@ -136,3 +136,8 @@
 .ai-widget__turbo-frame {
   display: contents;
 }
+
+.ai-bubble--assistant p { margin: 0 0 8px; }
+.ai-bubble--assistant ul,
+.ai-bubble--assistant ol { padding-left: 20px; margin: 0 0 8px; }
+.ai-bubble--assistant strong { font-weight: 600; }

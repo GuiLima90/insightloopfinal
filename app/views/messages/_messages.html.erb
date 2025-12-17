@@ -13,7 +13,7 @@
       <%# <div class="il-chat-bubble il-chat-bubble-assistant">
         <div class="il-chat-meta">Insight Loop AI</div>
         <div class="il-chat-content"> %>
-          <%= message.content %>
+          <%= render_markdown(message.content) %>
         <%# </div>
       </div> %>
     </div>
