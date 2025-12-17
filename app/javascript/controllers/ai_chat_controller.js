@@ -1,11 +1,11 @@
-// ===============================================
+// Para repassarmos antes de mergear o back:
 // AI ASSISTANT COM FRONTEND APENAS!!! O BACK ESTÁ MOCKADO.
 // -----------------------------------------------
-// O widget já está pronto no front (UI/UX).
+// O widget já está pronto no front...
 //
 // IMPORTANTE PARA BACKEND:
 // - As respostas do chat estão MOCKADAS.
-// - NÃO existe chamada de API ainda.
+// - Logo, NÃO existe chamada de API ainda.
 // - O método mockReply() deve ser removido
 //   quando o endpoint de AI estiver pronto.
 //
