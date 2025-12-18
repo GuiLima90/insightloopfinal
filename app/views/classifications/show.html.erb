@@ -4,23 +4,23 @@
 <div class="strategic-plan">
   <div class="container strategic-plan__container">
 
-    <nav aria-label="breadcrumb" class="mb-3">
+   <!-- <nav aria-label="breadcrumb" class="mb-3">
       <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
         <li class="breadcrumb-item"><%= link_to "Análises", classifications_path, class: "breadcrumb-link" %></li>
         <li class="breadcrumb-item active" aria-current="page">Plano Estratégico</li>
       </ol>
-    </nav>
+    </nav>-->
 
     <div class="mb-4">
       <div class="d-flex align-items-center gap-3 mb-2">
-        <%= link_to classifications_path, class: "strategic-plan__back" do %>←<% end %>
+
 
         <div>
           <p class="strategic-plan__category">
-            <%= @classification.tag_category.presence || "Categoria" rescue "Categoria" %>
+            <!--<%= @classification.tag_category.presence || "Categoria" rescue "Categoria" %>-->
           </p>
-          <h1 class="strategic-plan__title"><%= @classification.tag %></h1>
+          <h1 class="strategic-plan__title ms-2"><%= @classification.tag %></h1>
         </div>
       </div>
 
@@ -30,15 +30,16 @@
           <%= volume_pct %>% do volume
         </div>
 
-        <div class="pill pill--neutral">
+        <div class="pill pill--neutral justify-content-center gap-1">
           <i class="bi bi-graph-up-arrow me-1"></i>
           <%= (@volume_change_pct.present? ? "+#{@volume_change_pct}%" : "+18%") %> vs. mês anterior
         </div>
 
-        <div class="pill pill--ai">
-          <i class="bi bi-stars me-1"></i>
-          Análise por IA
-        </div>
+         <div class="pill pill--ai d-flex align-items-center justify-content-center gap-1">
+            <i class="bi bi-stars"></i>
+            <span>Análise por IA</span>
+          </div>
+
       </div>
     </div>
 
@@ -279,3 +280,5 @@
     </div>
   </section>
 <% end %>
+  <%= link_to classifications_path, class: "strategic-plan__back" do %>
+    <i class="fa-solid fa-arrow-left-long"></i><% end %>
