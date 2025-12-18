@@ -70,6 +70,7 @@ export default class extends Controller {
     if (el) el.remove()
   }
 
+
   mockReply(text) {
     const t = text.toLowerCase()
     if (t.includes("pareto") || t.includes("80")) return "Posso te explicar o Pareto e como identificar as tags que mais puxam volume."
