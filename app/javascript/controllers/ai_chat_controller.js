@@ -24,7 +24,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["panel", "messages", "input"]
+  static targets = ["panel", "messages", "input", "body"]
 
   connect() {
     this.open = false

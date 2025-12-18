@@ -92,7 +92,16 @@
 .ai-bubble--assistant {
   background: #ffffff;
   align-self: flex-start;
+  font-size: 14px !important;
+
+  // p {
+  //   size: 14px !important;
+  //   color: #0f172a;
+  // }
 }
+
+.ai-bubble--assistant p { size: 14px; color: #0f172a }
+
 
 .ai-bubble--user {
   background: #0f172a;
@@ -137,7 +146,7 @@
   display: contents;
 }
 
-.ai-bubble--assistant p { margin: 0 0 8px; }
-.ai-bubble--assistant ul,
-.ai-bubble--assistant ol { padding-left: 20px; margin: 0 0 8px; }
-.ai-bubble--assistant strong { font-weight: 600; }
+// .ai-bubble--assistant p { margin: 0 0 8px; }
+// .ai-bubble--assistant ul,
+// .ai-bubble--assistant ol { padding-left: 20px; margin: 0 0 8px; }
+// .ai-bubble--assistant strong { font-weight: 600; }
