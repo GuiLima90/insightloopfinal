@@ -14,8 +14,3 @@ class ImprovementsController < ApplicationController
   end
 
 end
-
-
-
-
-
